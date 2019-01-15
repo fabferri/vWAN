@@ -26,8 +26,8 @@ The article reports a list of powershell scripts to create an Azure Virtual WAN.
 The topology is based on:
 * a virtual WAN named **wan1**
 * a single virtual hub **hub1-vnet**
-* two spoke VNets, **spoke1-vnet and spoke2-vnet**, connected to the **hub1-vnet**. spoke1 and spoke2 VNets are in the same region of the virtual hub
-* two VPN sites (site1 and site2) deployed in different regions from the virtual hub. Each remote site has a Cisco CSR to establish the IPsec tunnel with the virtual hub.
+* two spoke VNets, **spoke1-vnet** and **spoke2-vnet**, connected to the **hub1-vnet**. spoke1 and spoke2 VNets are in the same region of the virtual hub
+* two VPN sites, **site1** and **site2**, deployed in different regions from the virtual hub. Each remote site has a Cisco CSR to establish the IPsec tunnel with the virtual hub.
 
 
 
