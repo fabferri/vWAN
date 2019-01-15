@@ -1,0 +1,2 @@
+﻿BGP is enabled on site 1 and site2 then the Address space are not required.
+By Azure management portal remove the Address space "192.168.255.0/24" associated with the two sites (site1 and site2).

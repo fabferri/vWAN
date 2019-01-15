@@ -1,0 +1,104 @@
+[
+  {
+    "configurationVersion": {
+      "LastUpdatedTime": "2019-01-14T18:15:17.3005326Z",
+      "Version": "b8a94d1d-1170-48a1-9284-f501357dd7cd"
+    },
+    "vpnSiteConfiguration": {
+      "Name": "site2",
+      "IPAddress": "40.117.210.246",
+      "BgpSetting": {
+        "Asn": 65020,
+        "BgpPeeringAddress": "172.16.0.20",
+        "PeerWeight": 32768
+      }
+    },
+    "vpnSiteConnections": [
+      {
+        "hubConfiguration": {
+          "AddressSpace": "10.0.0.0/24",
+          "Region": "West Central US",
+          "ConnectedSubnets": [
+            "10.0.10.0/24",
+            "10.0.11.0/24",
+            "10.0.20.0/24",
+            "10.0.21.0/24"
+          ]
+        },
+        "gatewayConfiguration": {
+          "IpAddresses": {
+            "Instance0": "52.159.49.194",
+            "Instance1": "52.159.48.85"
+          },
+          "BgpSetting": {
+            "Asn": 65515,
+            "BgpPeeringAddresses": {
+              "Instance0": "10.0.0.7",
+              "Instance1": "10.0.0.6"
+            },
+            "PeerWeight": 0
+          }
+        },
+        "connectionConfiguration": {
+          "IsBgpEnabled": true,
+          "PSK": "secret!101!",
+          "IPsecParameters": {
+            "SADataSizeInKilobytes": 102400000,
+            "SALifeTimeInSeconds": 3600
+          }
+        }
+      }
+    ]
+  },
+  {
+    "configurationVersion": {
+      "LastUpdatedTime": "2019-01-14T18:15:17.3005326Z",
+      "Version": "a29ceb5b-8ab0-48bc-b299-dd6629e8d3ed"
+    },
+    "vpnSiteConfiguration": {
+      "Name": "site1",
+      "IPAddress": "40.121.93.46",
+      "BgpSetting": {
+        "Asn": 65010,
+        "BgpPeeringAddress": "172.16.0.10",
+        "PeerWeight": 32768
+      }
+    },
+    "vpnSiteConnections": [
+      {
+        "hubConfiguration": {
+          "AddressSpace": "10.0.0.0/24",
+          "Region": "West Central US",
+          "ConnectedSubnets": [
+            "10.0.10.0/24",
+            "10.0.11.0/24",
+            "10.0.20.0/24",
+            "10.0.21.0/24"
+          ]
+        },
+        "gatewayConfiguration": {
+          "IpAddresses": {
+            "Instance0": "52.159.49.194",
+            "Instance1": "52.159.48.85"
+          },
+          "BgpSetting": {
+            "Asn": 65515,
+            "BgpPeeringAddresses": {
+              "Instance0": "10.0.0.7",
+              "Instance1": "10.0.0.6"
+            },
+            "PeerWeight": 0
+          }
+        },
+        "connectionConfiguration": {
+          "IsBgpEnabled": true,
+          "PSK": "secret!101!",
+          "IPsecParameters": {
+            "SADataSizeInKilobytes": 102400000,
+            "SALifeTimeInSeconds": 3600
+          }
+        }
+      }
+    ]
+  }
+]
