@@ -19,7 +19,7 @@ editor=""/>
 
 ## Example of manual deployment of Azure Virtual WAN by powershell
 
-The article reports a list of powershell scripts to create an Azure Virtual WAN. An overview of network configuration is reported below.
+The article reports a list of powershell scripts to create an Azure Virtual WAN. An overview of network configuration is shown below.
 
 [![1]][1]
 
@@ -40,15 +40,15 @@ The topology is based on:
 |  **step05.ps1**   | - Create site2-vnet<br>- create Cisco CSR in site2-vnet<br>- create a VM in subnet2<br>- set a UDR to force the traffic to the CSR interface connected to the subnet2 |
 |  **step06.ps1**   | - Create the vpn site1<br>- Create the vpn site2<br>- Create the connection hub-vpn site1<br>- Create the connection hub-vpn site2 |
 |  **step07.txt**   | BGP is enabled on site 1 and site2 then the Address space are not required.<br> By Azure management portal remove the address space "192.168.255.0/24" associated with the two sites (site1 and site2). |
-|  **step08.ps1**   | - Create an Azure storage account. It will be used in the next step to store the configuration of Virtual WAN.<br> - Create a storage container access policy<br>- Create Storage Access Signature (SAS) with access policy<br>- store the virtual WAN config in the Azure storage account<br>- Get the configuration of Virtual WAN from the storage account<br>- Compose the configuration of Cisco CSR1 and Cisco CSR2 to setup the site VPNs<br> store the configuration of CSR1 and Cisco CSR2 (**csr1-config.txt**, **csr2-config.txt**) in the local directory |
+|  **step08.ps1**   | - Create an Azure storage account. It will be used in the next step to store the configuration of Virtual WAN.<br> - Create a storage container access policy<br>- Create Storage Access Signature (SAS) with access policy<br>- store the virtual WAN config in the Azure storage account<br>- Get the configuration of Virtual WAN from the storage account<br>- Compose the configuration of Cisco CSR1 and Cisco CSR2 to setup the site VPNs<br> Cisco CSR configurations (**csr1-config.txt**, **csr2-config.txt**) are created in the script local directory |
 |  **step09.ps1**   |- Copy the VPN configurations **csr1-config.txt** in the clipbord, login in Cisco CSR1 and paste the VPN configurations <br>- Copy the VPN configuration **csr2-config.txt** in the clipboard, login in Cisco CSR2 and paste the VPN configuration|
 
 
 A network diagram with more information is shown below:
 [![2]][2]
 
-The script **step01.ps1, step02.ps1, step03.ps1** can simultaneosly because do not have dependency.
-In following chapters a list of diagrams related to the specific deployment after running the related script. 
+The script **step01.ps1, step02.ps1, step04.ps1, step05.ps1** can simultaneosly because do not have dependency.
+In following paragraphs the network diagrams assocated with script.
 
 #### <a name="vWAN"></a>1. STEP1: create vWAN with hub,and gateway
 [![3]][3]
@@ -64,7 +64,6 @@ In following chapters a list of diagrams related to the specific deployment afte
 
 #### <a name="vWAN"></a>5. STEP5: create site2
 [![7]][7]
-
 
 #### <a name="vWAN"></a>6. STEP6: in the Virtual hub create the vpn sites and vpn connections
 [![8]][8]
