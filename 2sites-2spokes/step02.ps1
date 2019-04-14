@@ -1,5 +1,4 @@
 ﻿###########################################
-#  
 # - Create a Resource Group
 # - Create a spoke1-vnet with subnet1 and subnet2
 # - Create a spoke2-vnet with subnet1 and subnet2
@@ -13,7 +12,6 @@
 #
 ###########################################
 ##   Run the script by command:
-##
 ##  .\scriptName -adminUsername YOUR_USERNAME -adminPassword YOUR_PASSWORD
 ##
 ################# Input parameters ########
@@ -27,41 +25,42 @@ param (
     )
 
 ### Variables
-$subscriptionName= "Windows Azure MSDN - Visual Studio Ultimate"
-$rgName          = "RG-spokes"
-$location        = "westcentralus"    
-$vnet1Name       = "spoke1-vnet"
-$vnet1Prefix     = @("10.0.10.0/24","10.0.11.0/24")
-$subnet11Name    = "subnet1"
-$subnet11Prexif  = "10.0.10.0/24"
-$subnet12Name    = "subnet2"
-$subnet12Prexif  = "10.0.11.0/24"
+$subscriptionName= "AzDev"                             # name of the Azure subscription
+$rgName          = "RG-spokes"                         # name of the resource group to deploye the spoke VNets
+$location        = "northeurope"                       # Azure location of spoke VNets
+#  
+$vnet1Name       = "spoke1-vnet"                       # name of the spoke1 VNet
+$vnet1Prefix     = @("10.0.10.0/24","10.0.11.0/24")    # address space of the first spoke VNet
+$subnet11Name    = "subnet1"                           # name of the subnet1 in spoke1 VNet
+$subnet11Prexif  = "10.0.10.0/24"                      # address space assigned to the subnet1 of spoke1 VNet
+$subnet12Name    = "subnet2"                           # name of the subnet2 in spoke1 VNet
+$subnet12Prexif  = "10.0.11.0/24"                      # address space of the spoke1 VNet
 #
-$vnet2Name       = "spoke2-vnet"
-$vnet2Prefix     = @("10.0.20.0/24","10.0.21.0/24")
-$subnet21Name    = "subnet1"
-$subnet21Prexif  = "10.0.20.0/24"
+$vnet2Name       = "spoke2-vnet"                       # name of the spoke2 VNet
+$vnet2Prefix     = @("10.0.20.0/24","10.0.21.0/24")    # address space of the second spoke VNet
+$subnet21Name    = "subnet1"                           # name of the subnet1 in spoke2 VNet
+$subnet21Prexif  = "10.0.20.0/24"                      # address space assigned to the subnet1 of spoke2 VNet
 $subnet22Name    = "subnet2"
 $subnet22Prexif  = "10.0.21.0/24"
 #
 ## VMs
-$vmName11        = "spoke1-vm1"
-$vmName12        = "spoke1-vm2"
-$vmName21        = "spoke2-vm1"
-$vmName22        = "spoke2-vm2"
-$privIP_vm11     = "10.0.10.10"
-$privIP_vm12     = "10.0.11.10"
-$privIP_vm21     = "10.0.20.10"
-$privIP_vm22     = "10.0.21.10"
+$vmName11        = "spoke1-vm1"                       # name of the VM attached to the subnet1 of the spoke1 VNet
+$vmName12        = "spoke1-vm2"                       # name of the VM attached to the subnet2 of the spoke1 VNet
+$vmName21        = "spoke2-vm1"                       # name of the VM attached to the subnet1 of the spoke2 VNet
+$vmName22        = "spoke2-vm2"                       # name of the VM attached to the subnet2 of the spoke2 VNet
+$privIP_vm11     = "10.0.10.10"                       # private IP assigned to VM attached to the subnet1 of the spoke1 VNet
+$privIP_vm12     = "10.0.11.10"                       # private IP assigned to VM attached to the subnet2 of the spoke1 VNet
+$privIP_vm21     = "10.0.20.10"                       # private IP assigned to VM attached to the subnet1 of the spoke2 VNet
+$privIP_vm22     = "10.0.21.10"                       # private IP assigned to VM attached to the subnet2 of the spoke2 VNet
 #
-$adminName       = $adminUsername
-$adminPwd        = $adminPassword
-$publisherName   = "openlogic"
-$offerName       = "CentOS"
-$skuName         = "7.5"
+$adminName       = $adminUsername                     # administrator username of the VMs
+$adminPwd        = $adminPassword                     # administrator password of the VMs
+$publisherName   = "openlogic"                        # publisher of linux VMs
+$offerName       = "CentOS"                           # linux VM distro
+$skuName         = "7.5"                              # linux VM version
 $version         = "latest"
-$vmSize          = "Standard_B1s"    # "Standard_DS1_v2"
-$nsgName         = "nsgVNets"
+$vmSize          = "Standard_B1s"                     # size of the VM
+$nsgName         = "nsgVNets"                         # name of the network security group asociated with the subnets
 #
 #
 ########## FUNCTIONs ########################################
@@ -77,24 +76,24 @@ function CreateVNet{
          [Parameter(Mandatory=$true)] [System.String]$subnet2Prefix
          )
 try {
-    $vnet = Get-AzureRmVirtualNetwork -ResourceGroupName $rgName -Name $vnetName -ErrorAction Stop -WarningAction SilentlyContinue
+    $vnet = Get-AzVirtualNetwork -ResourceGroupName $rgName -Name $vnetName -ErrorAction Stop -WarningAction SilentlyContinue
     Write-Host 'VNet '$vnetName' already exists... skipping' -foregroundcolor Green -backgroundcolor Black
 } catch {  
-    $vnet = New-AzureRmVirtualNetwork -Name $vnetName          `
+    $vnet = New-AzVirtualNetwork -Name $vnetName          `
                                   -ResourceGroupName $rgName   `
                                   -Location $location          `
                                   -AddressPrefix $vnetPrefix   `
                                   -Verbose -Force -WarningAction SilentlyContinue
-    $subnet1 = Add-AzureRmVirtualNetworkSubnetConfig -Name $subnet1Name -AddressPrefix $subnet1Prefix -VirtualNetwork $vnet -WarningAction SilentlyContinue
-    $subnet2 = Add-AzureRmVirtualNetworkSubnetConfig -Name $subnet2Name -AddressPrefix $subnet2Prefix -VirtualNetwork $vnet -WarningAction SilentlyContinue
-    Set-AzureRmVirtualNetwork -VirtualNetwork $vnet -WarningAction SilentlyContinue
+    $subnet1 = Add-AzVirtualNetworkSubnetConfig -Name $subnet1Name -AddressPrefix $subnet1Prefix -VirtualNetwork $vnet -WarningAction SilentlyContinue
+    $subnet2 = Add-AzVirtualNetworkSubnetConfig -Name $subnet2Name -AddressPrefix $subnet2Prefix -VirtualNetwork $vnet -WarningAction SilentlyContinue
+    Set-AzVirtualNetwork -VirtualNetwork $vnet -WarningAction SilentlyContinue
 }
 
 write-host -ForegroundColor Yellow "VNet              : " $vnet.Name
 write-host -ForegroundColor Yellow "VNet Address Space: " $vnet.AddressSpace.AddressPrefixes  
 for($i=0;$i-le $vnet.Subnets.Count-1;$i++)
 {
-     $subnet=Get-AzureRmVirtualNetworkSubnetConfig -Name $vnet.Subnets[$i].Name -VirtualNetwork $vnet -WarningAction SilentlyContinue
+     $subnet=Get-AzVirtualNetworkSubnetConfig -Name $vnet.Subnets[$i].Name -VirtualNetwork $vnet -WarningAction SilentlyContinue
      write-host -ForegroundColor Yellow "SubNet Name       : " $subnet.Name
      write-host -ForegroundColor Yellow "SubNet Prefix     : " $subnet.AddressPrefix  
  
@@ -120,14 +119,14 @@ function createAzVM {
 
 
 ####### Create a Public IP Address
-$publicIP = New-AzureRmPublicIpAddress   `
+$publicIP = New-AzPublicIpAddress   `
            -Name $publicIPName          `
            -ResourceGroupName $rgName    `
            -Location $location           `
            -AllocationMethod Dynamic     `
            -Force
 
-$publicIP = Get-AzureRmPublicIpAddress  -Name $publicIPName -ResourceGroupName $rgName
+$publicIP = Get-AzPublicIpAddress  -Name $publicIPName -ResourceGroupName $rgName
 write-host -foreground Yellow "Allocate a Public IP Address:" $publicIP.Name
 
 
@@ -136,7 +135,7 @@ write-host -foreground Yellow "Allocate a Public IP Address:" $publicIP.Name
 if ($enableForwarding)
 {
 
-$nic = New-AzureRmNetworkInterface `
+$nic = New-AzNetworkInterface `
                 -Name $nicName `
                 -ResourceGroupName $rgName `
                 -Location $location  `
@@ -146,7 +145,7 @@ $nic = New-AzureRmNetworkInterface `
                 -EnableIPForwarding `
                 -Force -Verbose 
 } else {
-$nic = New-AzureRmNetworkInterface `
+$nic = New-AzNetworkInterface `
                 -Name $nicName `
                 -ResourceGroupName $rgName `
                 -Location $location `
@@ -163,15 +162,15 @@ write-host -foreground Yellow "NIC            :" $nic.Name "has been created."
 
 
 try {
-  $vm = Get-AzureRmVM -Name $vmName -ResourceGroupName $rgName -ErrorAction Stop
+  $vm = Get-AzVM -Name $vmName -ResourceGroupName $rgName -ErrorAction Stop
   write-host -foreground Yellow "VM:" $vm.Name "already exists... skipping" -foregroundcolor Green -backgroundcolor Black
 } catch {
-  $vmConfig = New-AzureRmVMConfig `
+  $vmConfig = New-AzVMConfig `
                        -VMName $vmName `
                        -VMSize $vmSize `
                        -Verbose
 
-  $vmConfig = Set-AzureRmVMOperatingSystem `
+  $vmConfig = Set-AzVMOperatingSystem `
                        -VM $vmConfig  `
                        -Linux `
                        -ComputerName $vmName `
@@ -180,23 +179,23 @@ try {
 
   # set the name of the OS disk
   $diskName=$vmName+"-osDisk"
-  $vmConfig = Set-AzureRmVMOSDisk -VM  $vmConfig -CreateOption FromImage -Name $diskName -Linux 
+  $vmConfig = Set-AzVMOSDisk -VM  $vmConfig -CreateOption FromImage -Name $diskName -Linux 
 
-  $vmConfig = Set-AzureRmVMSourceImage `
+  $vmConfig = Set-AzVMSourceImage `
                        -VM $vmConfig  `
                        -PublisherName $script:publisherName `
                        -Offer $script:offerName `
                        -Skus $script:skuName `
                        -Version $script:version -Verbose 
 
-  $vmConfig = Add-AzureRmVMNetworkInterface `
+  $vmConfig = Add-AzVMNetworkInterface `
                        -VM $vmConfig `
                        -Id $nic.Id `
                        -Primary 
 
-  $vmConfig = Set-AzureRmVMBootDiagnostics -VM $vmConfig -Disable -Verbose 
+  $vmConfig = Set-AzVMBootDiagnostics -VM $vmConfig -Disable -Verbose 
 
-  New-AzureRmVM -VM $vmConfig `
+  New-AzVM -VM $vmConfig `
             -ResourceGroupName $rgName `
             -Location $location `
             -verbose
@@ -211,15 +210,15 @@ $pwd = ConvertTo-SecureString -String $adminPwd -AsPlainText -Force
 $creds = New-Object System.Management.Automation.PSCredential( $adminName, $pwd);
 
 # Select the Azure subscription
-$subscr=Get-AzureRmSubscription -SubscriptionName $subscriptionName
-Select-AzureRmSubscription -SubscriptionId $subscr.Id 
+$subscr=Get-AzSubscription -SubscriptionName $subscriptionName
+Select-AzSubscription -SubscriptionId $subscr.Id 
 
 
 try {     
-    Get-AzureRmResourceGroup -Name $rgName -Location $location -ErrorAction Stop     
+    Get-AzResourceGroup -Name $rgName -Location $location -ErrorAction Stop     
     Write-Host 'RG already exists... skipping' -foregroundcolor Green -backgroundcolor Black
 } catch {     
-    $rg = New-AzureRmResourceGroup -Name $rgName -Location $location  -Force
+    $rg = New-AzResourceGroup -Name $rgName -Location $location  -Force
 }
 
 
@@ -245,8 +244,8 @@ CreateVNet -rgName $VNetArray[$i].rgName `
 
 
 ## Create VMs
-$vnet1 = Get-AzureRmVirtualNetwork -ResourceGroupName $rgName -Name $vnet1Name -WarningAction SilentlyContinue
-$vnet2 = Get-AzureRmVirtualNetwork -ResourceGroupName $rgName -Name $vnet2Name -WarningAction SilentlyContinue
+$vnet1 = Get-AzVirtualNetwork -ResourceGroupName $rgName -Name $vnet1Name -WarningAction SilentlyContinue
+$vnet2 = Get-AzVirtualNetwork -ResourceGroupName $rgName -Name $vnet2Name -WarningAction SilentlyContinue
 
 $vmArray = @( 
         [pscustomobject]@{ vmName=$vmName11; nicName=$vmName11+"-nic"; publicIPName=$vmName11+"-pubIP"; privateIP=$privIP_vm11; vnet=$vnet1; subnetId=$vnet1.Subnets[0].Id;enableForwarding=$false}, 
@@ -273,40 +272,40 @@ createAzVM -rgName $rgName `
 }
 
 try {
-  $nsg=get-AzureRmNetworkSecurityGroup -ResourceGroupName $rgName -Location $location -Name $nsgName -ErrorAction Stop
+  $nsg=get-AzNetworkSecurityGroup -ResourceGroupName $rgName -Location $location -Name $nsgName -ErrorAction Stop
   Write-Host 'NSG: '$nsgName' already exists... skipping' -foregroundcolor  Green -backgroundcolor Black
 }catch {
   # Create an inbound network security group rule for port 22
-  $nsgRuleSSH = New-AzureRmNetworkSecurityRuleConfig -Name nsgSSH-rule  -Protocol Tcp `
+  $nsgRuleSSH = New-AzNetworkSecurityRuleConfig -Name nsgSSH-rule  -Protocol Tcp `
     -Direction Inbound -Priority 1000 -SourceAddressPrefix * -SourcePortRange * -DestinationAddressPrefix * `
     -DestinationPortRange 22 -Access Allow
 
-  $nsgRuleRDP = New-AzureRmNetworkSecurityRuleConfig -Name nsgRDP-rule  -Protocol Tcp `
+  $nsgRuleRDP = New-AzNetworkSecurityRuleConfig -Name nsgRDP-rule  -Protocol Tcp `
     -Direction Inbound -Priority 1010 -SourceAddressPrefix * -SourcePortRange * -DestinationAddressPrefix * `
     -DestinationPortRange 3389 -Access Allow
 
   # Create a network security group
-  $nsg = New-AzureRmNetworkSecurityGroup -ResourceGroupName $rgName -Location $location `
+  $nsg = New-AzNetworkSecurityGroup -ResourceGroupName $rgName -Location $location `
        -Name $nsgName -SecurityRules $nsgRuleSSH,$nsgRuleRDP -Tag $tag -Force
 }
 ## associated NSG to a subnets
-$vnet1 = Get-AzureRmVirtualNetwork -ResourceGroupName $rgName -Name $vnet1Name -WarningAction SilentlyContinue
-$subnet11 = Get-AzureRmVirtualNetworkSubnetConfig -VirtualNetwork $vnet1 -Name $subnet11Name
-$subnet12 = Get-AzureRmVirtualNetworkSubnetConfig -VirtualNetwork $vnet1 -Name $subnet12Name
-$nsg = Get-AzureRmNetworkSecurityGroup -ResourceGroupName $rgName -Name $nsgName
+$vnet1 = Get-AzVirtualNetwork -ResourceGroupName $rgName -Name $vnet1Name -WarningAction SilentlyContinue
+$subnet11 = Get-AzVirtualNetworkSubnetConfig -VirtualNetwork $vnet1 -Name $subnet11Name
+$subnet12 = Get-AzVirtualNetworkSubnetConfig -VirtualNetwork $vnet1 -Name $subnet12Name
+$nsg = Get-AzNetworkSecurityGroup -ResourceGroupName $rgName -Name $nsgName
 # Network security group nsgVNets cannot be attached to firewall subnet AzureFirewallSubnet. Use firewall rules instead.
 $subnet11.NetworkSecurityGroup = $nsg
 $subnet12.NetworkSecurityGroup = $nsg
-Set-AzureRmVirtualNetwork -VirtualNetwork $vnet1
+Set-AzVirtualNetwork -VirtualNetwork $vnet1
 #
 #
-$vnet2 = Get-AzureRmVirtualNetwork -ResourceGroupName $rgName -Name $vnet2Name -WarningAction SilentlyContinue
-$subnet21 = Get-AzureRmVirtualNetworkSubnetConfig -VirtualNetwork $vnet2 -Name $subnet21Name
-$subnet22 = Get-AzureRmVirtualNetworkSubnetConfig -VirtualNetwork $vnet2 -Name $subnet22Name
-$nsg = Get-AzureRmNetworkSecurityGroup -ResourceGroupName $rgName -Name $nsgName
+$vnet2 = Get-AzVirtualNetwork -ResourceGroupName $rgName -Name $vnet2Name -WarningAction SilentlyContinue
+$subnet21 = Get-AzVirtualNetworkSubnetConfig -VirtualNetwork $vnet2 -Name $subnet21Name
+$subnet22 = Get-AzVirtualNetworkSubnetConfig -VirtualNetwork $vnet2 -Name $subnet22Name
+$nsg = Get-AzNetworkSecurityGroup -ResourceGroupName $rgName -Name $nsgName
 $subnet21.NetworkSecurityGroup = $nsg
 $subnet22.NetworkSecurityGroup = $nsg
-Set-AzureRmVirtualNetwork -VirtualNetwork $vnet2
+Set-AzVirtualNetwork -VirtualNetwork $vnet2
 
 
 

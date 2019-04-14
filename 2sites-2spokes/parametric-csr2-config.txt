@@ -4,7 +4,7 @@
 exit
 !
 interface Loopback0
- ip address 172.16.0.10 255.255.255.255
+ ip address 172.16.0.20 255.255.255.255
  no shut
 exit
 !
@@ -20,20 +20,20 @@ exit
 !
 crypto ikev2 keyring key-peer1
  peer azvpn1
-  address 52.159.49.194
+  address <PUB_IP_VPN_GATEWAY_INSTANCE0>
   pre-shared-key secret!101!
 exit
 !
 !
 crypto ikev2 keyring key-peer2
  peer azvpn2
-  address 52.159.48.85
+  address <PUB_IP_VPN_GATEWAY_INSTANCE1>
   pre-shared-key secret!101!
 exit
  !
 crypto ikev2 profile az-PROFILE1
  match address local interface GigabitEthernet1
- match identity remote address 52.159.49.194 255.255.255.255
+ match identity remote address <PUB_IP_VPN_GATEWAY_INSTANCE0> 255.255.255.255
  authentication remote pre-share
  authentication local pre-share
  keyring local key-peer1
@@ -41,7 +41,7 @@ exit
 !
 crypto ikev2 profile az-PROFILE2
  match address local interface GigabitEthernet1
- match identity remote address 52.159.48.85 255.255.255.255
+ match identity remote address <PUB_IP_VPN_GATEWAY_INSTANCE1> 255.255.255.255
  authentication remote pre-share
  authentication local pre-share
  keyring local key-peer2
@@ -62,24 +62,24 @@ crypto ipsec profile az-VTI2
 exit
 !
 interface Tunnel0
- ip address 172.16.0.1 255.255.255.255
+ ip address 172.16.0.5 255.255.255.255
  ip tcp adjust-mss 1350
  tunnel source GigabitEthernet1
  tunnel mode ipsec ipv4
- tunnel destination 52.159.49.194
+ tunnel destination <PUB_IP_VPN_GATEWAY_INSTANCE0>
  tunnel protection ipsec profile az-VTI1
 exit
 !
 interface Tunnel1
- ip address 172.16.0.2 255.255.255.255
+ ip address 172.16.0.6 255.255.255.255
  ip tcp adjust-mss 1350
  tunnel source GigabitEthernet1
  tunnel mode ipsec ipv4
- tunnel destination 52.159.48.85
+ tunnel destination <PUB_IP_VPN_GATEWAY_INSTANCE1>
  tunnel protection ipsec profile az-VTI2
 exit
 !
-router bgp 65010
+router bgp 65020
  bgp router-id interface Loopback0
  bgp log-neighbor-changes
  neighbor 10.0.0.6 remote-as 65515
@@ -90,8 +90,8 @@ router bgp 65010
  neighbor 10.0.0.7 update-source Loopback0
  !
  address-family ipv4
-  network 10.1.10.0 mask 255.255.255.0
-  network 10.1.11.0 mask 255.255.255.0
+  network 10.1.20.0 mask 255.255.255.0
+  network 10.1.21.0 mask 255.255.255.0
   neighbor 10.0.0.6 activate
   neighbor 10.0.0.6 next-hop-self
   neighbor 10.0.0.6 soft-reconfiguration inbound
@@ -103,10 +103,10 @@ router bgp 65010
 exit
 !
 ! route set by ARM template
-ip route 0.0.0.0 0.0.0.0 10.1.10.1
+ip route 0.0.0.0 0.0.0.0 10.1.20.1
 !
 !
-ip route 10.0.0.6 255.255.255.255 Tunnel1
-ip route 10.0.0.7 255.255.255.255 Tunnel0
+ip route 10.0.0.6 255.255.255.255 Tunnel0
+ip route 10.0.0.7 255.255.255.255 Tunnel1
 !
 

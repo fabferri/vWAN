@@ -1,8 +1,10 @@
 csr2#show run
+Building configuration...
 
 !
 hostname csr2
 !
+ip domain name csr2.cloudapp.net
 !
 !
 crypto ikev2 proposal az-PROPOSAL
@@ -15,27 +17,27 @@ crypto ikev2 policy az-POLICY
 !
 crypto ikev2 keyring key-peer1
  peer azvpn1
-  address 52.159.49.194
+  address 52.156.192.27
   pre-shared-key secret!101!
  !
 !
 crypto ikev2 keyring key-peer2
  peer azvpn2
-  address 52.159.48.85
+  address 52.155.221.170
   pre-shared-key secret!101!
- !
+!
 !
 !
 crypto ikev2 profile az-PROFILE1
  match address local interface GigabitEthernet1
- match identity remote address 52.159.49.194 255.255.255.255
+ match identity remote address 52.156.192.27 255.255.255.255
  authentication local pre-share
  authentication remote pre-share
  keyring local key-peer1
 !
 crypto ikev2 profile az-PROFILE2
  match address local interface GigabitEthernet1
- match identity remote address 52.159.48.85 255.255.255.255
+ match identity remote address 52.155.221.170 255.255.255.255
  authentication local pre-share
  authentication remote pre-share
  keyring local key-peer2
@@ -63,7 +65,7 @@ interface Tunnel0
  ip tcp adjust-mss 1350
  tunnel source GigabitEthernet1
  tunnel mode ipsec ipv4
- tunnel destination 52.159.49.194
+ tunnel destination 52.156.192.27
  tunnel protection ipsec profile az-VTI1
 !
 interface Tunnel1
@@ -71,7 +73,7 @@ interface Tunnel1
  ip tcp adjust-mss 1350
  tunnel source GigabitEthernet1
  tunnel mode ipsec ipv4
- tunnel destination 52.159.48.85
+ tunnel destination 52.155.221.170
  tunnel protection ipsec profile az-VTI2
 !
 interface GigabitEthernet1
@@ -109,17 +111,9 @@ router bgp 65020
  exit-address-family
 !
 !
-virtual-service csr_mgmt
- ip shared host-interface GigabitEthernet1
-!
-ip forward-protocol nd
-ip http server
-ip http authentication local
-ip http secure-server
-!
 ip route 0.0.0.0 0.0.0.0 10.1.20.1
-ip route 10.0.0.6 255.255.255.255 Tunnel1
-ip route 10.0.0.7 255.255.255.255 Tunnel0
+ip route 10.0.0.6 255.255.255.255 Tunnel0
+ip route 10.0.0.7 255.255.255.255 Tunnel1
 ip ssh rsa keypair-name sshkeys
 ip scp server enable
 !
@@ -134,8 +128,11 @@ line vty 0 4
 ntp server time-pnp.cisco.com
 !
 
-csr2# show ip bgp
-BGP table version is 41, local router ID is 172.16.0.20
+csr2#
+csr2#
+csr2#
+csr2#show ip bgp
+BGP table version is 12, local router ID is 172.16.0.20
 Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
               r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
               x best-external, a additional-path, c RIB-compressed,
@@ -144,25 +141,48 @@ Origin codes: i - IGP, e - EGP, ? - incomplete
 RPKI validation codes: V valid, I invalid, N Not found
 
      Network          Next Hop            Metric LocPrf Weight Path
- *m   10.0.0.0/24      10.0.0.7                               0 65515 i
- *>                    10.0.0.6                               0 65515 i
- *m   10.0.10.0/24     10.0.0.7                               0 65515 i
- *>                    10.0.0.6                               0 65515 i
- *m   10.0.11.0/24     10.0.0.7                               0 65515 i
- *>                    10.0.0.6                               0 65515 i
- *m   10.0.20.0/24     10.0.0.7                               0 65515 i
- *>                    10.0.0.6                               0 65515 i
- *m   10.0.21.0/24     10.0.0.7                               0 65515 i
- *>                    10.0.0.6                               0 65515 i
- *m   10.1.10.0/24     10.0.0.6                               0 65515 65010 i
- *>                    10.0.0.7                               0 65515 65010 i
- *m   10.1.11.0/24     10.0.0.6                               0 65515 65010 i
- *>                    10.0.0.7                               0 65515 65010 i
+ *>   10.0.0.0/24      10.0.0.6                               0 65515 i
+ *m                    10.0.0.7                               0 65515 i
+ *>   10.0.10.0/24     10.0.0.6                               0 65515 i
+ *m                    10.0.0.7                               0 65515 i
+ *>   10.0.11.0/24     10.0.0.6                               0 65515 i
+ *m                    10.0.0.7                               0 65515 i
+ *>   10.0.20.0/24     10.0.0.6                               0 65515 i
+ *m                    10.0.0.7                               0 65515 i
+ *>   10.0.21.0/24     10.0.0.6                               0 65515 i
+ *m                    10.0.0.7                               0 65515 i
+ *>   10.1.10.0/24     10.0.0.6                               0 65515 65010 i
+ *m                    10.0.0.7                               0 65515 65010 i
+ *>   10.1.11.0/24     10.0.0.6                               0 65515 65010 i
+     Network          Next Hop            Metric LocPrf Weight Path
+ *m                    10.0.0.7                               0 65515 65010 i
  *>   10.1.20.0/24     0.0.0.0                  0         32768 i
  *>   10.1.21.0/24     0.0.0.0                  0         32768 i
- *m   172.16.0.10/32   10.0.0.6                               0 65515 i
- *>                    10.0.0.7                               0 65515 i
- rm   172.16.0.20/32   10.0.0.7                               0 65515 i
-     Network          Next Hop            Metric LocPrf Weight Path
- r>                    10.0.0.6                               0 65515 i
+ *>   172.16.0.10/32   10.0.0.6                               0 65515 i
+ *m                    10.0.0.7                               0 65515 i
+ r>   172.16.0.20/32   10.0.0.6                               0 65515 i
+ rm                    10.0.0.7                               0 65515 i
 csr2#
+csr2#show crypto session
+Crypto session current status
+
+Interface: Tunnel0
+Profile: az-PROFILE1
+Session status: UP-ACTIVE
+Peer: 52.156.192.27 port 4500
+  Session ID: 1
+  IKEv2 SA: local 10.1.20.5/4500 remote 52.156.192.27/4500 Active
+  IPSEC FLOW: permit ip 0.0.0.0/0.0.0.0 0.0.0.0/0.0.0.0
+        Active SAs: 2, origin: crypto map
+
+Interface: Tunnel1
+Profile: az-PROFILE2
+Session status: UP-ACTIVE
+Peer: 52.155.221.170 port 4500
+  Session ID: 2
+  IKEv2 SA: local 10.1.20.5/4500 remote 52.155.221.170/4500 Active
+  IPSEC FLOW: permit ip 0.0.0.0/0.0.0.0 0.0.0.0/0.0.0.0
+        Active SAs: 2, origin: crypto map
+
+csr2#
+
