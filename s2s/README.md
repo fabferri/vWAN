@@ -1,5 +1,5 @@
 <properties
-pageTitle= 'Manual configuration of Azure Virtual WAN by powershell'
+pageTitle= 'Manual configuration of site-to-site VPN in Azure Virtual WAN by powershell'
 description= "Manual configuration of Azure Virtual WAN by powershell"
 documentationcenter: na
 services=""
@@ -17,7 +17,7 @@ editor=""/>
    ms.date="14/01/2019"
    ms.author="fabferri" />
 
-##Site-to-site VPN with Azure Virtual WAN by Azure powershell
+## Site-to-site VPN with Azure Virtual WAN by Azure powershell
 
 The article discusses a list of powershell scripts to create an Azure Virtual WAN with multiple sites. An overview of network configuration is shown below.
 <p align="center">
@@ -56,7 +56,7 @@ The article discuss two different cases:
 
 In following paragraphs, the network diagrams associated with scripts.
 
-###<a name="vWAN"></a>1. CASE1: all sites have different networks and different ASNs
+### <a name="vWAN"></a>1. CASE1: all sites have different networks and different ASNs
 This is the most common scenario, with all the sites with different ASNs
 <p align="center">
 [![3]][3]
@@ -335,9 +335,9 @@ To disable the logging in the vty session:
 csr3# undebug all
 ```
 
-###<a name="vWAN"></a>3. Notes
+### <a name="vWAN"></a>3. Notes
 
-####<a name="vWAN"></a>3.1 SSH sessions
+#### <a name="vWAN"></a>3.1 SSH sessions
 When you start an SSH session to the CSR 1000v, ensure that you do not configure the terminal VTY timeout
 as infinite—do not configure: **exec-timeout 0 0**. Use a non-zero value for the timeout; for example,
 exec-timeout 4 0 (this command specifies a timeout of four minutes and zero seconds).
