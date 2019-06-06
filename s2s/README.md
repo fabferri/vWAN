@@ -20,9 +20,9 @@ editor=""/>
 ## Site-to-site VPN with Azure Virtual WAN by Azure powershell
 
 The article discusses a list of powershell scripts to create an Azure Virtual WAN with multiple sites. An overview of network configuration is shown below.
-<p align="center">
+
 [![1]][1]
-</p>
+
 
 The topology is based on:
 * an Azure virtual WAN
@@ -42,9 +42,9 @@ The sequence of scripts to create the deployment is described in the table:
 
 
 A network diagram with more information is shown below:
-<p align="center">
+
 [![2]][2]
-</p>
+
 
 Notes
 * The powershell scripts **step01.ps1, step02.ps1** can run simultaneously because do not have dependency.
@@ -58,16 +58,16 @@ In following paragraphs, the network diagrams associated with scripts.
 
 ### <a name="vWAN"></a>1. CASE1: all sites have different networks and different ASNs
 This is the most common scenario, with all the sites with different ASNs
-<p align="center">
+
 [![3]][3]
-</p>
+
 
 The steps of Virtual WAN creation are visualized below.
 
 #### <a name="vWAN"></a>1.1 STEP1: create vWAN with hub and VPN gateway
-<p align="center">
+
 [![4]][4]
-</p>
+
 
 #### <a name="vWAN"></a>1.2 STEP2: create sites
 The script step02.ps1 creates three sites in sequence, as reported in the diagram:
@@ -76,14 +76,14 @@ The script step02.ps1 creates three sites in sequence, as reported in the diagra
 </p>
 
 #### <a name="vWAN"></a>1.3 STEP3: Create sites and connections in virtual WAN
-<p align="center">
+
 [![6]][6]
-</p>
+
 
 #### <a name="vWAN"></a>1.4 STEP4: generate the configuration for the Cisco CSRs
-<p align="center">
+
 [![7]][7]
-</p>
+
 
 By default BGP will advertise all prefixes to EBGP (External BGP) neighbors. To avoid the each site readvertise to the hub the network prefixes learnt from the hub-gateway, it can be used a filter-list with the AS PATH access-list.
 
@@ -100,16 +100,14 @@ Same filter can be defined and applied to the csr2 and csr3.
 #### <a name="vWAN"></a>8. Network flows
 The diagram below shown the allowed communication flow between the three sites:
 
-<p align="center">
 [![8]][8]
-</p>
+
 
 ###<a name="vWAN"></a>2. CASE2: two sites have different networks and same ASNs
 The network diagram shows below depicts the case with Site2 and Site3 with different networks and the same ASN.
 
-<p align="center">
 [![9]][9]
-</p>
+
 
 
 
@@ -260,7 +258,7 @@ csr2#
 ```
 
 The same behaviour happens in csr3, discarding the advertisments 10.1.20.0/24,10.1.21.0/24 received from the csr2.
-The standard eBGP behavior can be changed, by overriding the loop prevention mechanism of eBGP by "allowas-in":
+The standard eBGP behaviour can be changed, by overriding the loop prevention mechanism of eBGP by "allowas-in":
 
 ```console
 csr2(config-router)# bgp 65012
@@ -275,7 +273,7 @@ In the command:
 
 In the bgp table of csr2 is now installed the network prefixes 10.1.30.0/24, 10.1.31.0/24 advertised from csr3:
 
-```oonsole
+```console
 csr2#show ip bgp
 BGP table version is 113, local router ID is 172.16.0.20
 Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
@@ -307,7 +305,7 @@ RPKI validation codes: V valid, I invalid, N Not found
 ```
 
 
-In csr3 the mechanism of loop prevention is still set to default. Let's see how the crs3 rejected neworks 10.1.20.0/24, 10.1.21.0/24 advertised from csr2:
+In csr3 the mechanism of loop prevention is still set to default. Let's see how the crs3 rejected networks 10.1.20.0/24, 10.1.21.0/24 advertised from csr2:
 
 ```console
 ! set the level of logging:  5  (notification)
@@ -346,7 +344,7 @@ exec-timeout 4 0 (this command specifies a timeout of four minutes and zero seco
 The reason why the exec-timeout 0 0 command causes an issue is as follows:
 Azure enforces a timeout for the console idle period of between 4 and 30 minutes. When the idle timer expires,
 Azure disconnects the SSH session. However, the session is not cleared from the point of view of the CSR
-1000v, as the timeout wasset to infinite (by the exec-timeout 0 0 configuration command). The disconnection
+1000v, as the timeout was set to infinite (by the exec-timeout 0 0 configuration command). The disconnection
 causes a terminal session to be orphaned. The session in the CSR 1000v remains open indefinitely. If you try
 to establish a new SSH session, a new virtual terminal session is used. If this pattern continues to occur, the
 number of allowed simultaneous terminal sessions is reached and no new sessions can be established.
@@ -364,17 +362,18 @@ csr# clear line 2
 If the workarounds in the preceding scenarios are ineffective, as a last resort, you can restart the Cisco CSR
 1000v in the Azure portal.
 
-In powershel script **step02.ps1**, the Azure public public IP associated with the Cisco CSR is created with an idle-timeout of  20 minutes:
+In powershel script **step02.ps1**, the Azure public public IP associated with the Cisco CSR is created with an idle-timeout of 20 minutes:
 
 ```
 New-AzPublicIpAddress -IdleTimeoutInMinutes 20 `
 ```
-the idle timout of Azue public IP specifies how many minutes to keep a TCP connection remains open without relying on clients to send keep-alive messages. The idle-timeout associated with Azure public IP is set to longer interval compare with the Cisco terminal VTY timeout:
+the idle-timout of Azue public IP specifies how many minutes to keep a TCP connection remains open without relying on clients to send keep-alive messages. The idle-timeout associated with Azure public IP is set to longer interval compare with the Cisco terminal VTY timeout:
 ```
 line vty 0 4
  exec-timeout 15 0
 ```
-to avoid orphane sessions on vty and guaratees SSH session reamins open enough to configure the device.
+to avoid orphan sessions on vty.
+The value of 15 min guaratees SSH session remains open enough to configure the device.
 
 
 
