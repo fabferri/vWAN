@@ -1,0 +1,274 @@
+csr2#show ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet1       10.1.20.5       YES DHCP   up                    up
+GigabitEthernet2       10.1.21.5       YES DHCP   up                    up
+Loopback0              172.16.0.20     YES manual up                    up
+Tunnel0                172.16.0.3      YES manual up                    up
+Tunnel1                172.16.0.4      YES manual up                    up
+csr2#
+
+
+
+
+
+csr2#  show crypto session
+Crypto session current status
+
+Interface: Tunnel0
+Profile: az-PROFILE1
+Session status: UP-ACTIVE
+Peer: 52.156.195.109 port 4500
+  Session ID: 1
+  IKEv2 SA: local 10.1.20.5/4500 remote 52.156.195.109/4500 Active
+  IPSEC FLOW: permit ip 0.0.0.0/0.0.0.0 0.0.0.0/0.0.0.0
+        Active SAs: 2, origin: crypto map
+
+Interface: Tunnel1
+Profile: az-PROFILE2
+Session status: UP-ACTIVE
+Peer: 52.156.195.110 port 4500
+  Session ID: 2
+  IKEv2 SA: local 10.1.20.5/4500 remote 52.156.195.110/4500 Active
+  IPSEC FLOW: permit ip 0.0.0.0/0.0.0.0 0.0.0.0/0.0.0.0
+        Active SAs: 2, origin: crypto map
+
+csr2#
+csr2#  show crypto ikev2 sa
+ IPv4 Crypto IKEv2  SA
+
+Tunnel-id Local                 Remote                fvrf/ivrf            Status
+1         10.1.20.5/4500        52.156.195.109/4500   none/none            READY
+      Encr: AES-CBC, keysize: 256, PRF: SHA1, Hash: SHA96, DH Grp:2, Auth sign: PSK, Auth verify: PSK
+      Life/Active Time: 86400/5707 sec
+
+Tunnel-id Local                 Remote                fvrf/ivrf            Status
+2         10.1.20.5/4500        52.156.195.110/4500   none/none            READY
+      Encr: AES-CBC, keysize: 256, PRF: SHA1, Hash: SHA96, DH Grp:2, Auth sign: PSK, Auth verify: PSK
+      Life/Active Time: 86400/5705 sec
+
+ IPv6 Crypto IKEv2  SA
+
+csr2#
+csr2#  show crypto ipsec sa
+
+interface: Tunnel0
+    Crypto map tag: Tunnel0-head-0, local addr 10.1.20.5
+
+   protected vrf: (none)
+   local  ident (addr/mask/prot/port): (0.0.0.0/0.0.0.0/0/0)
+   remote ident (addr/mask/prot/port): (0.0.0.0/0.0.0.0/0/0)
+   current_peer 52.156.195.109 port 4500
+     PERMIT, flags={origin_is_acl,}
+    #pkts encaps: 99, #pkts encrypt: 99, #pkts digest: 99
+    #pkts decaps: 99, #pkts decrypt: 99, #pkts verify: 99
+    #pkts compressed: 0, #pkts decompressed: 0
+    #pkts not compressed: 0, #pkts compr. failed: 0
+    #pkts not decompressed: 0, #pkts decompress failed: 0
+    #send errors 0, #recv errors 0
+
+     local crypto endpt.: 10.1.20.5, remote crypto endpt.: 52.156.195.109
+     plaintext mtu 1422, path mtu 1500, ip mtu 1500, ip mtu idb GigabitEthernet1
+     current outbound spi: 0x26C40C64(650382436)
+     PFS (Y/N): N, DH group: none
+
+     inbound esp sas:
+      spi: 0x7C4E9A9E(2085526174)
+        transform: esp-256-aes esp-sha-hmac ,
+        in use settings ={Tunnel UDP-Encaps, }
+        conn id: 2007, flow_id: CSR:7, sibling_flags FFFFFFFF80000048, crypto map: Tunnel0-head-0
+        sa timing: remaining key lifetime (k/sec): (4607991/1023)
+        IV size: 16 bytes
+        replay detection support: Y
+        Status: ACTIVE(ACTIVE)
+
+     inbound ah sas:
+
+     inbound pcp sas:
+
+     outbound esp sas:
+      spi: 0x26C40C64(650382436)
+        transform: esp-256-aes esp-sha-hmac ,
+        in use settings ={Tunnel UDP-Encaps, }
+        conn id: 2008, flow_id: CSR:8, sibling_flags FFFFFFFF80000048, crypto map: Tunnel0-head-0
+        sa timing: remaining key lifetime (k/sec): (4607995/1023)
+        IV size: 16 bytes
+        replay detection support: Y
+        Status: ACTIVE(ACTIVE)
+
+     outbound ah sas:
+
+     outbound pcp sas:
+
+interface: Tunnel1
+    Crypto map tag: Tunnel1-head-0, local addr 10.1.20.5
+
+   protected vrf: (none)
+   local  ident (addr/mask/prot/port): (0.0.0.0/0.0.0.0/0/0)
+   remote ident (addr/mask/prot/port): (0.0.0.0/0.0.0.0/0/0)
+   current_peer 52.156.195.110 port 4500
+     PERMIT, flags={origin_is_acl,}
+    #pkts encaps: 243, #pkts encrypt: 243, #pkts digest: 243
+    #pkts decaps: 249, #pkts decrypt: 249, #pkts verify: 249
+    #pkts compressed: 0, #pkts decompressed: 0
+    #pkts not compressed: 0, #pkts compr. failed: 0
+    #pkts not decompressed: 0, #pkts decompress failed: 0
+    #send errors 0, #recv errors 0
+
+     local crypto endpt.: 10.1.20.5, remote crypto endpt.: 52.156.195.110
+     plaintext mtu 1422, path mtu 1500, ip mtu 1500, ip mtu idb GigabitEthernet1
+     current outbound spi: 0x9175C0B0(2440413360)
+     PFS (Y/N): N, DH group: none
+
+     inbound esp sas:
+      spi: 0x80E3371E(2162374430)
+        transform: esp-256-aes esp-sha-hmac ,
+        in use settings ={Tunnel UDP-Encaps, }
+        conn id: 2006, flow_id: CSR:6, sibling_flags FFFFFFFF80000048, crypto map: Tunnel1-head-0
+        sa timing: remaining key lifetime (k/sec): (4607991/971)
+        IV size: 16 bytes
+        replay detection support: Y
+        Status: ACTIVE(ACTIVE)
+
+     inbound ah sas:
+
+     inbound pcp sas:
+
+     outbound esp sas:
+      spi: 0x9175C0B0(2440413360)
+        transform: esp-256-aes esp-sha-hmac ,
+        in use settings ={Tunnel UDP-Encaps, }
+        conn id: 2005, flow_id: CSR:5, sibling_flags FFFFFFFF80000048, crypto map: Tunnel1-head-0
+        sa timing: remaining key lifetime (k/sec): (4607995/971)
+        IV size: 16 bytes
+        replay detection support: Y
+        Status: ACTIVE(ACTIVE)
+
+     outbound ah sas:
+
+     outbound pcp sas:
+csr2#
+
+=====================================================================
+
+
+csr2#show ip bgp
+BGP table version is 67, local router ID is 172.16.0.20
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+              t secondary path,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>   10.0.0.0/24      10.0.0.6                               0 65515 i
+ *m                    10.0.0.7                               0 65515 i
+ *>   10.1.10.0/24     10.0.0.6                               0 65515 65011 i
+ *m                    10.0.0.7                               0 65515 65011 i
+ *>   10.1.11.0/24     10.0.0.6                               0 65515 65011 i
+ *m                    10.0.0.7                               0 65515 65011 i
+ *>   10.1.20.0/24     0.0.0.0                  0         32768 i
+ *>   10.1.21.0/24     0.0.0.0                  0         32768 i
+ *m   10.1.30.0/24     10.0.0.6                               0 65515 65013 i
+ *>                    10.0.0.7                               0 65515 65013 i
+ *m   10.1.31.0/24     10.0.0.6                               0 65515 65013 i
+ *>                    10.0.0.7                               0 65515 65013 i
+ *>   172.16.0.10/32   10.0.0.6                               0 65515 i
+ *m                    10.0.0.7                               0 65515 i
+ r>   172.16.0.20/32   10.0.0.6                               0 65515 i
+ rm                    10.0.0.7                               0 65515 i
+ *m   172.16.0.30/32   10.0.0.7                               0 65515 i
+ *>                    10.0.0.6                               0 65515 i
+csr2#
+
+csr2#show ip bgp neighbors 10.0.0.6 advertised-routes
+BGP table version is 67, local router ID is 172.16.0.20
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+              t secondary path,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>   10.1.20.0/24     0.0.0.0                  0         32768 i
+ *>   10.1.21.0/24     0.0.0.0                  0         32768 i
+
+Total number of prefixes 2
+csr2#
+
+csr2#show ip bgp neighbors 10.0.0.7 advertised-routes
+BGP table version is 67, local router ID is 172.16.0.20
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+              t secondary path,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>   10.1.20.0/24     0.0.0.0                  0         32768 i
+ *>   10.1.21.0/24     0.0.0.0                  0         32768 i
+
+Total number of prefixes 2
+csr2#
+
+csr2#show ip bgp neighbors 10.0.0.6 routes
+BGP table version is 67, local router ID is 172.16.0.20
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+              t secondary path,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>   10.0.0.0/24      10.0.0.6                               0 65515 i
+ *>   10.1.10.0/24     10.0.0.6                               0 65515 65011 i
+ *>   10.1.11.0/24     10.0.0.6                               0 65515 65011 i
+ *m   10.1.30.0/24     10.0.0.6                               0 65515 65013 i
+ *m   10.1.31.0/24     10.0.0.6                               0 65515 65013 i
+ *>   172.16.0.10/32   10.0.0.6                               0 65515 i
+ r>   172.16.0.20/32   10.0.0.6                               0 65515 i
+ *>   172.16.0.30/32   10.0.0.6                               0 65515 i
+
+Total number of prefixes 8
+csr2#
+
+csr2#show ip bgp neighbors 10.0.0.7 routes
+BGP table version is 67, local router ID is 172.16.0.20
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+              t secondary path,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *m   10.0.0.0/24      10.0.0.7                               0 65515 i
+ *m   10.1.10.0/24     10.0.0.7                               0 65515 65011 i
+ *m   10.1.11.0/24     10.0.0.7                               0 65515 65011 i
+ *>   10.1.30.0/24     10.0.0.7                               0 65515 65013 i
+ *>   10.1.31.0/24     10.0.0.7                               0 65515 65013 i
+ *m   172.16.0.10/32   10.0.0.7                               0 65515 i
+ rm   172.16.0.20/32   10.0.0.7                               0 65515 i
+ *m   172.16.0.30/32   10.0.0.7                               0 65515 i
+
+Total number of prefixes 8
+csr2#
+
+csr2#show ip bgp update-group
+BGP version 4 update-group 2, external, Address Family: IPv4 Unicast
+  BGP Update version : 67/0, messages 0, active RGs: 1
+  NEXT_HOP is always this router for eBGP paths
+  Outgoing update AS path filter list is 5
+  Topology: global, highest version: 67, tail marker: 67
+  Format state: Current working (OK, last minimum advertisement interval)
+                Refresh blocked (not in list, last not in list)
+  Update messages formatted 4, replicated 8, current 0, refresh 0, limit 1000
+  Number of NLRIs in the update sent: max 3, min 0
+  Minimum time between advertisement runs is 30 seconds
+  Has 2 members:
+   10.0.0.6         10.0.0.7
+
+csr2#

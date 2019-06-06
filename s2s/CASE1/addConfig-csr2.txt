@@ -1,0 +1,13 @@
+!csr2
+!
+!
+ip as-path access-list 5 permit ^$
+!
+router bgp 65012
+ !
+ address-family ipv4
+  neighbor 10.0.0.6 filter-list 5 out
+  neighbor 10.0.0.7 filter-list 5 out
+ exit-address-family
+!
+!

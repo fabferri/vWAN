@@ -1,0 +1,100 @@
+csr1#show ver
+Cisco IOS XE Software, Version 16.04.01
+Cisco IOS Software [Everest], CSR1000V Software (X86_64_LINUX_IOSD-UNIVERSALK9-M), Version 16.4.1, RELEASE SOFTWARE (fc3)
+...
+
+csr1#show ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol
+GigabitEthernet1       10.1.10.5       YES DHCP   up                    up
+GigabitEthernet2       10.1.11.5       YES DHCP   up                    up
+Loopback0              172.16.0.10     YES manual up                    up
+Tunnel0                172.16.0.1      YES manual up                    up
+Tunnel1                172.16.0.2      YES manual up                    up
+csr1#
+
+
+
+
+csr1#show ip bgp
+BGP table version is 72, local router ID is 172.16.0.10
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+              t secondary path,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>   10.0.0.0/24      10.0.0.6                               0 65515 i
+ *m                    10.0.0.7                               0 65515 i
+ *>   10.1.10.0/24     0.0.0.0                  0         32768 i
+ *>   10.1.11.0/24     0.0.0.0                  0         32768 i
+ *m   10.1.20.0/24     10.0.0.7                               0 65515 65012 i
+ *>                    10.0.0.6                               0 65515 65012 i
+ *m   10.1.21.0/24     10.0.0.7                               0 65515 65012 i
+ *>                    10.0.0.6                               0 65515 65012 i
+ *m   10.1.30.0/24     10.0.0.6                               0 65515 65013 i
+ *>                    10.0.0.7                               0 65515 65013 i
+ *m   10.1.31.0/24     10.0.0.6                               0 65515 65013 i
+ *>                    10.0.0.7                               0 65515 65013 i
+ r>   172.16.0.10/32   10.0.0.6                               0 65515 i
+ rm                    10.0.0.7                               0 65515 i
+ *m   172.16.0.20/32   10.0.0.6                               0 65515 i
+ *>                    10.0.0.7                               0 65515 i
+ *m   172.16.0.30/32   10.0.0.7                               0 65515 i
+ *>                    10.0.0.6                               0 65515 i
+csr1#
+
+csr1#show ip bgp neighbors 10.0.0.6 advertised-routes
+BGP table version is 72, local router ID is 172.16.0.10
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+              t secondary path,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>   10.1.10.0/24     0.0.0.0                  0         32768 i
+ *>   10.1.11.0/24     0.0.0.0                  0         32768 i
+
+Total number of prefixes 2
+csr1#
+
+
+csr1#show ip bgp neighbors 10.0.0.6 routes
+BGP table version is 72, local router ID is 172.16.0.10
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+              t secondary path,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>   10.0.0.0/24      10.0.0.6                               0 65515 i
+ *>   10.1.20.0/24     10.0.0.6                               0 65515 65012 i
+ *>   10.1.21.0/24     10.0.0.6                               0 65515 65012 i
+ *m   10.1.30.0/24     10.0.0.6                               0 65515 65013 i
+ *m   10.1.31.0/24     10.0.0.6                               0 65515 65013 i
+ r>   172.16.0.10/32   10.0.0.6                               0 65515 i
+ *m   172.16.0.20/32   10.0.0.6                               0 65515 i
+ *>   172.16.0.30/32   10.0.0.6                               0 65515 i
+
+Total number of prefixes 8
+
+csr1#show ip bgp update-group
+BGP version 4 update-group 2, external, Address Family: IPv4 Unicast
+  BGP Update version : 72/0, messages 0, active RGs: 1
+  NEXT_HOP is always this router for eBGP paths
+  Outgoing update AS path filter list is 5
+  Topology: global, highest version: 72, tail marker: 72
+  Format state: Current working (OK, last minimum advertisement interval)
+                Refresh blocked (not in list, last not in list)
+  Update messages formatted 4, replicated 8, current 0, refresh 0, limit 1000
+  Number of NLRIs in the update sent: max 3, min 0
+  Minimum time between advertisement runs is 30 seconds
+  Has 2 members:
+   10.0.0.6         10.0.0.7
+
+csr1#

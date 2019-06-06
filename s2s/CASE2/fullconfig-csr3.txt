@@ -1,0 +1,308 @@
+csr3#show run
+Building configuration...
+
+Current configuration : 6677 bytes
+!
+! Last configuration change at 17:21:00 UTC Wed May 29 2019 by supcloudadmin
+!
+version 16.4
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no platform punt-keepalive disable-kernel-core
+platform console virtual
+!
+hostname csr3
+!
+boot-start-marker
+boot-end-marker
+!
+!
+logging persistent size 1000000 filesize 8192 immediate
+!
+aaa new-model
+!
+!
+aaa authentication login default local
+aaa authorization exec default local none
+!
+!
+!
+!
+!
+aaa session-id common
+!
+!
+!
+!
+!
+!
+!
+!
+!
+
+
+
+ip domain name csr3.cloudapp.net
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+!
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-2806762657
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-2806762657
+ revocation-check none
+ rsakeypair TP-self-signed-2806762657
+!
+!
+crypto pki certificate chain TP-self-signed-2806762657
+ certificate self-signed 01
+  30820330 30820218 A0030201 02020101 300D0609 2A864886 F70D0101 05050030
+  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274
+  69666963 6174652D 32383036 37363236 3537301E 170D3139 30353239 31313233
+  35365A17 0D323030 31303130 30303030 305A3031 312F302D 06035504 03132649
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D32 38303637
+  36323635 37308201 22300D06 092A8648 86F70D01 01010500 0382010F 00308201
+  0A028201 0100C5A0 5BB2C92A 98CA3C67 11FAB3C4 3D2D9A05 A2149F15 8C904A4B
+  283E01B9 873A4887 473A5B27 563BF987 86F4A469 6312AECA 54C3DB0A 85CFE475
+  BD1D3CD0 FE5847D5 F3CDEE25 5748082A 67E6F7E5 ABCA5A66 49D150D6 A1721EB8
+  6967EB07 87361522 1AC07287 7DA878A2 EC368A34 C2972E90 E452C1F8 E62E3244
+  2053C6F1 6489CEB3 2877AA25 731A57F0 0986C974 5C862F85 5E19A6AB 811A15D2
+  48C8758E AC1FF422 06F85408 2B6BCFC3 15166094 F6563A9E BCDA0EDD 62B965D6
+  2F90D965 13C17FF6 5B83907E 9C1726B7 E021DE17 895C4644 DC01BFA9 8845B193
+  CAAD02F3 BE9339C3 FD6665F2 A86AA111 E7B990BB 792F12C5 18A95BA6 90A21FC8
+  BC9E3EF1 C3B50203 010001A3 53305130 0F060355 1D130101 FF040530 030101FF
+  301F0603 551D2304 18301680 140ED18F 22CE0209 55B863EE 0EB16EE7 1AECCE73
+  FE301D06 03551D0E 04160414 0ED18F22 CE020955 B863EE0E B16EE71A ECCE73FE
+  300D0609 2A864886 F70D0101 05050003 82010100 0AC1A2BA A5F2C292 E9C29B2B
+  60D47976 6888DEBD 210D793E 7ADD599E E26CC2B9 81CA3885 656ADD12 E7518420
+  BC6A7DF7 F8746A00 C13E6626 B5624A95 22836FB7 76BC46A4 8D323491 39C373A6
+  88412A99 14B8C75A 6494A80E 8819CE7A 5D97B278 7C99C496 52FDE668 A524D180
+  7E9BA03C 436E6798 671E414E E929DE1E 7144F68D CCED75BF D6BE557C 571600D2
+  C101CF4E 1CF08782 E57D14CF CD41B118 A55C711F ACA883A0 2850BBE9 D2C3E650
+  0790E2F8 1E54D977 E8627EE3 D237F648 6651C824 AB1F27C4 534C14AF F3CC0A1F
+  871BB351 098EB1D6 E7538854 A0C33920 6DF39B7C 55B04F13 3A536260 4C4C05CF
+  2B57D58A A670C26C E6EF68A9 F557BE7F F5306EF4
+        quit
+
+
+!
+!
+!
+!
+!
+!
+!
+license udi pid CSR1000V sn 9FPWYSOYBG5
+diagnostic bootup level minimal
+!
+spanning-tree extend system-id
+!
+!
+username supcloudadmin privilege 15 password 0 Verdicchio**2016
+!
+redundancy
+!
+crypto ikev2 proposal az-PROPOSAL
+ encryption aes-cbc-256 aes-cbc-128 3des
+ integrity sha1
+ group 2
+!
+crypto ikev2 policy az-POLICY
+ proposal az-PROPOSAL
+!
+crypto ikev2 keyring key-peer1
+ peer azvpn1
+  address 52.156.195.109
+  pre-shared-key secret!101!
+ !
+!
+crypto ikev2 keyring key-peer2
+ peer azvpn2
+  address 52.156.195.110
+  pre-shared-key secret!101!
+ !
+!
+!
+crypto ikev2 profile az-PROFILE1
+ match address local interface GigabitEthernet1
+ match identity remote address 52.156.195.109 255.255.255.255
+ authentication local pre-share
+ authentication remote pre-share
+ keyring local key-peer1
+!
+crypto ikev2 profile az-PROFILE2
+ match address local interface GigabitEthernet1
+ match identity remote address 52.156.195.110 255.255.255.255
+ authentication local pre-share
+ authentication remote pre-share
+ keyring local key-peer2
+!
+crypto ikev2 dpd 10 2 on-demand
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+crypto ipsec transform-set az-IPSEC-PROPOSAL-SET esp-aes 256 esp-sha-hmac
+ mode tunnel
+!
+crypto ipsec profile az-VTI1
+ set transform-set az-IPSEC-PROPOSAL-SET
+ set ikev2-profile az-PROFILE1
+!
+crypto ipsec profile az-VTI2
+ set transform-set az-IPSEC-PROPOSAL-SET
+ set ikev2-profile az-PROFILE2
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 172.16.0.30 255.255.255.255
+!
+interface Tunnel0
+ ip address 172.16.0.5 255.255.255.255
+ ip tcp adjust-mss 1350
+ tunnel source GigabitEthernet1
+ tunnel mode ipsec ipv4
+ tunnel destination 52.156.195.109
+ tunnel protection ipsec profile az-VTI1
+!
+interface Tunnel1
+ ip address 172.16.0.6 255.255.255.255
+ ip tcp adjust-mss 1350
+ tunnel source GigabitEthernet1
+ tunnel mode ipsec ipv4
+ tunnel destination 52.156.195.110
+ tunnel protection ipsec profile az-VTI2
+!
+interface GigabitEthernet1
+ ip address dhcp
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+interface GigabitEthernet2
+ ip address dhcp
+ negotiation auto
+ no mop enabled
+ no mop sysid
+!
+router bgp 65012
+ bgp router-id interface Loopback0
+ bgp log-neighbor-changes
+ neighbor 10.0.0.6 remote-as 65515
+ neighbor 10.0.0.6 ebgp-multihop 5
+ neighbor 10.0.0.6 update-source Loopback0
+ neighbor 10.0.0.7 remote-as 65515
+ neighbor 10.0.0.7 ebgp-multihop 5
+ neighbor 10.0.0.7 update-source Loopback0
+ !
+ address-family ipv4
+  network 10.1.30.0 mask 255.255.255.0
+  network 10.1.31.0 mask 255.255.255.0
+  neighbor 10.0.0.6 activate
+  neighbor 10.0.0.6 send-community
+  neighbor 10.0.0.6 next-hop-self
+  neighbor 10.0.0.6 soft-reconfiguration inbound
+  neighbor 10.0.0.6 route-map SetCommunity out
+  neighbor 10.0.0.6 filter-list 5 out
+  neighbor 10.0.0.7 activate
+  neighbor 10.0.0.7 send-community
+  neighbor 10.0.0.7 next-hop-self
+  neighbor 10.0.0.7 soft-reconfiguration inbound
+  neighbor 10.0.0.7 route-map SetCommunity out
+  neighbor 10.0.0.7 filter-list 5 out
+  maximum-paths eibgp 2
+ exit-address-family
+!
+!
+virtual-service csr_mgmt
+ ip shared host-interface GigabitEthernet1
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+!
+ip bgp-community new-format
+ip as-path access-list 5 permit ^$
+ip route 0.0.0.0 0.0.0.0 10.1.30.1
+ip route 0.0.0.0 0.0.0.0 10.1.20.1
+ip route 10.0.0.6 255.255.255.255 Tunnel1
+ip route 10.0.0.7 255.255.255.255 Tunnel0
+ip ssh rsa keypair-name sshkeys
+ip scp server enable
+!
+!
+access-list 101 permit ip 10.1.30.0 0.0.0.255 any
+access-list 101 permit ip 10.1.31.0 0.0.0.255 any
+!
+!
+route-map SetCommunity permit 20
+ match ip address 101
+ set community 65012:30
+!
+!
+!
+!
+!
+control-plane
+!
+ !
+ !
+ !
+ !
+!
+!
+!
+!
+!
+line con 0
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ exec-timeout 15 0
+ transport input ssh
+!
+ntp server time-pnp.cisco.com
+!
+!
+!
+!
+!
+end
+
+csr3#

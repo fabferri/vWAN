@@ -1,0 +1,22 @@
+! csr2
+!
+access-list 101 10 permit ip 10.1.20.0 0.0.0.255 any
+access-list 101 20 permit ip 10.1.21.0 0.0.0.255 any
+
+#the community value displays in AA:NN format
+ip bgp-community new-format
+route-map SetCommunity permit 20
+  match ip address 101
+  set community 65012:20
+!
+router bgp 65012
+ !
+ address-family ipv4
+  neighbor 10.0.0.6 send-community 
+  neighbor 10.0.0.6 route-map SetCommunity out
+
+  neighbor 10.0.0.7 send-community 
+  neighbor 10.0.0.7 route-map SetCommunity out
+
+ exit-address-family
+

@@ -1,0 +1,9 @@
+!csr2
+!
+router bgp 65012
+ !
+ address-family ipv4
+  neighbor 10.0.0.6 allowas-in 1
+  neighbor 10.0.0.7 allowas-in 1
+ exit-address-family
+!

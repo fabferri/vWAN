@@ -1,0 +1,158 @@
+csr1# show crypto session
+Crypto session current status
+
+Interface: Tunnel0
+Profile: az-PROFILE1
+Session status: UP-ACTIVE
+Peer: 52.142.113.34 port 4500
+  Session ID: 1
+  IKEv2 SA: local 10.1.10.5/4500 remote 52.142.113.34/4500 Active
+  IPSEC FLOW: permit ip 0.0.0.0/0.0.0.0 0.0.0.0/0.0.0.0
+        Active SAs: 2, origin: crypto map
+
+Interface: Tunnel1
+Profile: az-PROFILE2
+Session status: UP-ACTIVE
+Peer: 52.142.112.239 port 4500
+  Session ID: 2
+  IKEv2 SA: local 10.1.10.5/4500 remote 52.142.112.239/4500 Active
+  IPSEC FLOW: permit ip 0.0.0.0/0.0.0.0 0.0.0.0/0.0.0.0
+        Active SAs: 2, origin: crypto map
+
+csr1#show ip bgp
+BGP table version is 24, local router ID is 172.16.0.10
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+              t secondary path,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *m   10.0.0.0/24      10.0.0.7                               0 65515 i
+ *>                    10.0.0.6                               0 65515 i
+ *>   10.1.10.0/24     0.0.0.0                  0         32768 i
+ *>   10.1.11.0/24     0.0.0.0                  0         32768 i
+ *m   10.1.20.0/24     10.0.0.6                               0 65515 65012 i
+ *>                    10.0.0.7                               0 65515 65012 i
+ *m   10.1.21.0/24     10.0.0.6                               0 65515 65012 i
+ *>                    10.0.0.7                               0 65515 65012 i
+ *m   10.1.30.0/24     10.0.0.7                               0 65515 65013 i
+ *>                    10.0.0.6                               0 65515 65013 i
+ *m   10.1.31.0/24     10.0.0.7                               0 65515 65013 i
+ *>                    10.0.0.6                               0 65515 65013 i
+ rm   172.16.0.10/32   10.0.0.7                               0 65515 i
+     Network          Next Hop            Metric LocPrf Weight Path
+ r>                    10.0.0.6                               0 65515 i
+ *m   172.16.0.20/32   10.0.0.6                               0 65515 i
+ *>                    10.0.0.7                               0 65515 i
+ *m   172.16.0.30/32   10.0.0.6                               0 65515 i
+ *>                    10.0.0.7                               0 65515 i
+csr1#
+===================================================================================
+csr2#show crypto session
+Crypto session current status
+
+Interface: Tunnel0
+Profile: az-PROFILE1
+Session status: UP-ACTIVE
+Peer: 52.142.113.34 port 4500
+  Session ID: 1
+  IKEv2 SA: local 10.1.20.5/4500 remote 52.142.113.34/4500 Active
+  IPSEC FLOW: permit ip 0.0.0.0/0.0.0.0 0.0.0.0/0.0.0.0
+        Active SAs: 2, origin: crypto map
+
+Interface: Tunnel1
+Profile: az-PROFILE2
+Session status: UP-ACTIVE
+Peer: 52.142.112.239 port 4500
+  Session ID: 2
+  IKEv2 SA: local 10.1.20.5/4500 remote 52.142.112.239/4500 Active
+  IPSEC FLOW: permit ip 0.0.0.0/0.0.0.0 0.0.0.0/0.0.0.0
+        Active SAs: 2, origin: crypto map
+
+csr2#
+
+csr2#show ip bgp
+BGP table version is 19, local router ID is 172.16.0.20
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+              t secondary path,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>   10.0.0.0/24      10.0.0.6                               0 65515 i
+ *m                    10.0.0.7                               0 65515 i
+ *>   10.1.10.0/24     10.0.0.6                               0 65515 65011 i
+ *m                    10.0.0.7                               0 65515 65011 i
+ *>   10.1.11.0/24     10.0.0.6                               0 65515 65011 i
+ *m                    10.0.0.7                               0 65515 65011 i
+ *>   10.1.20.0/24     0.0.0.0                  0         32768 i
+ *>   10.1.21.0/24     0.0.0.0                  0         32768 i
+ *m   10.1.30.0/24     10.0.0.7                               0 65515 65013 i
+ *>                    10.0.0.6                               0 65515 65013 i
+ *m   10.1.31.0/24     10.0.0.7                               0 65515 65013 i
+ *>                    10.0.0.6                               0 65515 65013 i
+ *>   172.16.0.10/32   10.0.0.6                               0 65515 i
+     Network          Next Hop            Metric LocPrf Weight Path
+ *m                    10.0.0.7                               0 65515 i
+ r>   172.16.0.20/32   10.0.0.6                               0 65515 i
+ rm                    10.0.0.7                               0 65515 i
+ *m   172.16.0.30/32   10.0.0.6                               0 65515 i
+ *>                    10.0.0.7                               0 65515 i
+csr2#
+===================================================================================
+csr3#show crypto session
+Crypto session current status
+
+Interface: Tunnel0
+Profile: az-PROFILE1
+Session status: UP-ACTIVE
+Peer: 52.142.113.34 port 4500
+  Session ID: 1
+  IKEv2 SA: local 10.1.30.5/4500 remote 52.142.113.34/4500 Active
+  IPSEC FLOW: permit ip 0.0.0.0/0.0.0.0 0.0.0.0/0.0.0.0
+        Active SAs: 2, origin: crypto map
+
+Interface: Tunnel1
+Profile: az-PROFILE2
+Session status: UP-ACTIVE
+Peer: 52.142.112.239 port 4500
+  Session ID: 2
+  IKEv2 SA: local 10.1.30.5/4500 remote 52.142.112.239/4500 Active
+  IPSEC FLOW: permit ip 0.0.0.0/0.0.0.0 0.0.0.0/0.0.0.0
+        Active SAs: 2, origin: crypto map
+
+csr3#
+csr3#show ip bgp
+BGP table version is 14, local router ID is 172.16.0.30
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+              t secondary path,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>   10.0.0.0/24      10.0.0.6                               0 65515 i
+ *m                    10.0.0.7                               0 65515 i
+ *>   10.1.10.0/24     10.0.0.6                               0 65515 65011 i
+ *m                    10.0.0.7                               0 65515 65011 i
+ *>   10.1.11.0/24     10.0.0.6                               0 65515 65011 i
+ *m                    10.0.0.7                               0 65515 65011 i
+ *>   10.1.20.0/24     10.0.0.6                               0 65515 65012 i
+ *m                    10.0.0.7                               0 65515 65012 i
+ *>   10.1.21.0/24     10.0.0.6                               0 65515 65012 i
+ *m                    10.0.0.7                               0 65515 65012 i
+ *>   10.1.30.0/24     0.0.0.0                  0         32768 i
+ *>   10.1.31.0/24     0.0.0.0                  0         32768 i
+ *>   172.16.0.10/32   10.0.0.6                               0 65515 i
+     Network          Next Hop            Metric LocPrf Weight Path
+ *m                    10.0.0.7                               0 65515 i
+ *>   172.16.0.20/32   10.0.0.6                               0 65515 i
+ *m                    10.0.0.7                               0 65515 i
+ r>   172.16.0.30/32   10.0.0.6                               0 65515 i
+ rm                    10.0.0.7                               0 65515 i
+csr3#

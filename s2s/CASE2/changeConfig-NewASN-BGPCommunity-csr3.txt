@@ -1,0 +1,43 @@
+!
+access-list 101 10 permit ip 10.1.30.0 0.0.0.255 any
+access-list 101 20 permit ip 10.1.31.0 0.0.0.255 any
+!
+ip as-path access-list 5 permit ^$
+!
+#the community value displays in AA:NN format
+ip bgp-community new-format
+route-map SetCommunity permit 20
+  match ip address 101
+  set community 65012:30
+!
+! delete the BGP configuration
+no router bgp 65013
+!
+! recreate the BGP configuration with new ASN
+router bgp 65012
+ bgp router-id interface Loopback0
+ bgp log-neighbor-changes
+ neighbor 10.0.0.6 remote-as 65515
+ neighbor 10.0.0.6 ebgp-multihop 5
+ neighbor 10.0.0.6 update-source Loopback0
+ neighbor 10.0.0.7 remote-as 65515
+ neighbor 10.0.0.7 ebgp-multihop 5
+ neighbor 10.0.0.7 update-source Loopback0
+ !
+ address-family ipv4
+  network 10.1.30.0 mask 255.255.255.0
+  network 10.1.31.0 mask 255.255.255.0
+  neighbor 10.0.0.6 activate
+  neighbor 10.0.0.6 send-community
+  neighbor 10.0.0.6 next-hop-self
+  neighbor 10.0.0.6 soft-reconfiguration inbound
+  neighbor 10.0.0.6 route-map SetCommunity out
+  neighbor 10.0.0.6 filter-list 5 out
+  neighbor 10.0.0.7 activate
+  neighbor 10.0.0.7 send-community
+  neighbor 10.0.0.7 next-hop-self
+  neighbor 10.0.0.7 soft-reconfiguration inbound
+  neighbor 10.0.0.7 route-map SetCommunity out
+  neighbor 10.0.0.7 filter-list 5 out
+  maximum-paths eibgp 2
+ exit-address-family

@@ -1,0 +1,25 @@
+csr3#show ip bgp
+BGP table version is 9, local router ID is 172.16.0.30
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+              t secondary path,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>   10.0.0.0/24      10.0.0.6                               0 65515 i
+ *m                    10.0.0.7                               0 65515 i
+ *>   10.1.10.0/24     10.0.0.6                               0 65515 65011 i
+ *m                    10.0.0.7                               0 65515 65011 i
+ *>   10.1.11.0/24     10.0.0.6                               0 65515 65011 i
+ *m                    10.0.0.7                               0 65515 65011 i
+ *>   10.1.30.0/24     0.0.0.0                  0         32768 i
+ *>   10.1.31.0/24     0.0.0.0                  0         32768 i
+ *>   172.16.0.10/32   10.0.0.6                               0 65515 i
+ *m                    10.0.0.7                               0 65515 i
+ *>   172.16.0.20/32   10.0.0.6                               0 65515 i
+ *m                    10.0.0.7                               0 65515 i
+ r>   172.16.0.30/32   10.0.0.6                               0 65515 i
+ rm                    10.0.0.7                               0 65515 i
+csr3#

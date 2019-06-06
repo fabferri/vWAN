@@ -1,0 +1,67 @@
+csr1#show ip bgp
+BGP table version is 110, local router ID is 172.16.0.10
+Status codes: s suppressed, d damped, h history, * valid, > best, i - internal,
+              r RIB-failure, S Stale, m multipath, b backup-path, f RT-Filter,
+              x best-external, a additional-path, c RIB-compressed,
+              t secondary path,
+Origin codes: i - IGP, e - EGP, ? - incomplete
+RPKI validation codes: V valid, I invalid, N Not found
+
+     Network          Next Hop            Metric LocPrf Weight Path
+ *>   10.0.0.0/24      10.0.0.6                               0 65515 i
+ *m                    10.0.0.7                               0 65515 i
+ *>   10.1.10.0/24     0.0.0.0                  0         32768 i
+ *>   10.1.11.0/24     0.0.0.0                  0         32768 i
+ *m   10.1.20.0/24     10.0.0.7                               0 65515 65012 i
+ *>                    10.0.0.6                               0 65515 65012 i
+ *m   10.1.21.0/24     10.0.0.7                               0 65515 65012 i
+ *>                    10.0.0.6                               0 65515 65012 i
+ *m   10.1.30.0/24     10.0.0.6                               0 65515 65012 i
+ *>                    10.0.0.7                               0 65515 65012 i
+ *m   10.1.31.0/24     10.0.0.6                               0 65515 65012 i
+ *>                    10.0.0.7                               0 65515 65012 i
+ r>   172.16.0.10/32   10.0.0.6                               0 65515 i
+ rm                    10.0.0.7                               0 65515 i
+ *m   172.16.0.20/32   10.0.0.6                               0 65515 i
+ *>                    10.0.0.7                               0 65515 i
+ *m   172.16.0.30/32   10.0.0.6                               0 65515 i
+ *>                    10.0.0.7                               0 65515 i
+csr1#
+
+csr1#show bgp 10.1.20.0/24
+BGP routing table entry for 10.1.20.0/24, version 97
+Paths: (2 available, best #2, table default)
+Multipath: eiBGP
+  Not advertised to any peer
+  Refresh Epoch 1
+  65515 65012, (received & used)
+    10.0.0.7 from 10.0.0.7 (10.0.0.7)
+      Origin IGP, localpref 100, valid, external, multipath(oldest)
+      Community: 65012:20
+      rx pathid: 0, tx pathid: 0
+  Refresh Epoch 1
+  65515 65012, (received & used)
+    10.0.0.6 from 10.0.0.6 (10.0.0.6)
+      Origin IGP, localpref 100, valid, external, multipath, best
+      Community: 65012:20
+      rx pathid: 0, tx pathid: 0x0
+
+
+csr1#show bgp 10.1.30.0/24
+BGP routing table entry for 10.1.30.0/24, version 109
+Paths: (2 available, best #2, table default)
+Multipath: eiBGP
+  Not advertised to any peer
+  Refresh Epoch 1
+  65515 65012, (received & used)
+    10.0.0.6 from 10.0.0.6 (10.0.0.6)
+      Origin IGP, localpref 100, valid, external, multipath(oldest)
+      Community: 65012:30
+      rx pathid: 0, tx pathid: 0
+  Refresh Epoch 1
+  65515 65012, (received & used)
+    10.0.0.7 from 10.0.0.7 (10.0.0.7)
+      Origin IGP, localpref 100, valid, external, multipath, best
+      Community: 65012:30
+      rx pathid: 0, tx pathid: 0x0
+csr1#

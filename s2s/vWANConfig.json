@@ -1,0 +1,137 @@
+[
+  {
+    "configurationVersion": {
+      "LastUpdatedTime": "2019-05-29T11:52:32.8058591Z",
+      "Version": "71f7d994-410b-45b6-b0f3-ef5ea03853cd"
+    },
+    "vpnSiteConfiguration": {
+      "Name": "site3",
+      "IPAddress": "13.80.66.62",
+      "BgpSetting": {
+        "Asn": 65013,
+        "BgpPeeringAddress": "172.16.0.30",
+        "PeerWeight": 32768
+      }
+    },
+    "vpnSiteConnections": [
+      {
+        "hubConfiguration": {
+          "AddressSpace": "10.0.0.0/24",
+          "Region": "North Europe"
+        },
+        "gatewayConfiguration": {
+          "IpAddresses": {
+            "Instance0": "52.156.195.109",
+            "Instance1": "52.156.195.110"
+          },
+          "BgpSetting": {
+            "Asn": 65515,
+            "BgpPeeringAddresses": {
+              "Instance0": "10.0.0.7",
+              "Instance1": "10.0.0.6"
+            },
+            "PeerWeight": 0
+          }
+        },
+        "connectionConfiguration": {
+          "IsBgpEnabled": true,
+          "PSK": "secret!101!",
+          "IPsecParameters": {
+            "SADataSizeInKilobytes": 102400000,
+            "SALifeTimeInSeconds": 3600
+          }
+        }
+      }
+    ]
+  },
+  {
+    "configurationVersion": {
+      "LastUpdatedTime": "2019-05-29T11:52:32.8370828Z",
+      "Version": "ec36d50a-fdd4-451f-971a-1d2cd563421e"
+    },
+    "vpnSiteConfiguration": {
+      "Name": "site2",
+      "IPAddress": "13.95.12.69",
+      "BgpSetting": {
+        "Asn": 65012,
+        "BgpPeeringAddress": "172.16.0.20",
+        "PeerWeight": 32768
+      }
+    },
+    "vpnSiteConnections": [
+      {
+        "hubConfiguration": {
+          "AddressSpace": "10.0.0.0/24",
+          "Region": "North Europe"
+        },
+        "gatewayConfiguration": {
+          "IpAddresses": {
+            "Instance0": "52.156.195.109",
+            "Instance1": "52.156.195.110"
+          },
+          "BgpSetting": {
+            "Asn": 65515,
+            "BgpPeeringAddresses": {
+              "Instance0": "10.0.0.7",
+              "Instance1": "10.0.0.6"
+            },
+            "PeerWeight": 0
+          }
+        },
+        "connectionConfiguration": {
+          "IsBgpEnabled": true,
+          "PSK": "secret!101!",
+          "IPsecParameters": {
+            "SADataSizeInKilobytes": 102400000,
+            "SALifeTimeInSeconds": 3600
+          }
+        }
+      }
+    ]
+  },
+  {
+    "configurationVersion": {
+      "LastUpdatedTime": "2019-05-29T11:52:32.8839547Z",
+      "Version": "f892fdbd-32fe-4139-9060-295ffa5d87f9"
+    },
+    "vpnSiteConfiguration": {
+      "Name": "site1",
+      "IPAddress": "52.178.29.94",
+      "BgpSetting": {
+        "Asn": 65011,
+        "BgpPeeringAddress": "172.16.0.10",
+        "PeerWeight": 32768
+      }
+    },
+    "vpnSiteConnections": [
+      {
+        "hubConfiguration": {
+          "AddressSpace": "10.0.0.0/24",
+          "Region": "North Europe"
+        },
+        "gatewayConfiguration": {
+          "IpAddresses": {
+            "Instance0": "52.156.195.109",
+            "Instance1": "52.156.195.110"
+          },
+          "BgpSetting": {
+            "Asn": 65515,
+            "BgpPeeringAddresses": {
+              "Instance0": "10.0.0.7",
+              "Instance1": "10.0.0.6"
+            },
+            "PeerWeight": 0
+          }
+        },
+        "connectionConfiguration": {
+          "IsBgpEnabled": true,
+          "PSK": "secret!101!",
+          "IPsecParameters": {
+            "SADataSizeInKilobytes": 102400000,
+            "SALifeTimeInSeconds": 3600
+          }
+        }
+      }
+    ]
+  }
+]
