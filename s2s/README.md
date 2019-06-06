@@ -14,7 +14,7 @@ editor=""/>
    ms.topic="article"
    ms.tgt_pltfrm="na"
    ms.workload="na"
-   ms.date="14/01/2019"
+   ms.date="06/06/2019"
    ms.author="fabferri" />
 
 ## Site-to-site VPN with Azure Virtual WAN by Azure powershell
@@ -50,7 +50,7 @@ Notes
 * The powershell scripts **step01.ps1, step02.ps1** can run simultaneously because do not have dependency.
 * The powershell scripts can be easily changed to support a larger number of sites.
 
-The article discuss two different cases:
+The article walks through two different cases:
 * CASE1: all the sites advertise via BGP different networks with different ASN
 * CASE2: all the sites advertise via BGP different networks, but two sites, site2 and site3, have the same ASN
 
@@ -81,8 +81,9 @@ The script step02.ps1 creates three sites in sequence, as reported in the diagra
 </p>
 
 #### <a name="vWAN"></a>1.4 STEP4: generate the configuration for the Cisco CSRs
+<p align="center">
 [![7]][7]
-
+</p>
 
 By default BGP will advertise all prefixes to EBGP (External BGP) neighbors. To avoid the each site readvertise to the hub the network prefixes learnt from the hub-gateway, it can be used a filter-list with the AS PATH access-list.
 
@@ -99,19 +100,20 @@ Same filter can be defined and applied to the csr2 and csr3.
 #### <a name="vWAN"></a>8. Network flows
 The diagram below shown the allowed communication flow between the three sites:
 
-[![9]][9]
-
+<p align="center">
+[![8]][8]
+</p>
 
 ###<a name="vWAN"></a>2. CASE2: two sites have different networks and same ASNs
 The network diagram shows below depicts the case with Site2 and Site3 with different networks and the same ASN.
 
 <p align="center">
-[![10]][10]
+[![9]][9]
 </p>
 
 
 
-The configuration is different from previous case, becasue csr2 and csr3 have now the same ASN.
+The configuration is different from previous case, because csr2 and csr3 have now the same ASN.
 
 ```console
 csr2(config-router)# bgp 65012
@@ -385,9 +387,8 @@ to avoid orphane sessions on vty and guaratees SSH session reamins open enough t
 [5]: ./media/step2.png "network diagram step2"
 [6]: ./media/step3.png "network diagram step3"
 [7]: ./media/step4.png "network diagram step4"
-[8]: ./media/step5.png "network diagram step5"
-[9]: ./media/sites-communication.png "communication between sites"
-[10]: ./media/case2.png "network diagram step8"
+[8]: ./media/sites-communication.png "communication between sites"
+[9]: ./media/case2.png  "case2"
 
 <!--Link References-->
 
