@@ -71,9 +71,9 @@ The steps of Virtual WAN creation are visualized below.
 
 #### <a name="vWAN"></a>1.2 STEP2: create sites
 The script step02.ps1 creates three sites in sequence, as reported in the diagram:
-<p align="center">
+
 [![5]][5]
-</p>
+
 
 #### <a name="vWAN"></a>1.3 STEP3: Create sites and connections in virtual WAN
 
