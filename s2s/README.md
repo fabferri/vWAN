@@ -118,8 +118,8 @@ csr2(config-router)# bgp 65012
 csr2(config-router-af)#
 csr2(config-router-af)# neighbor 10.0.0.6 send-community
 csr2(config-router-af)# neighbor 10.0.0.6 route-map SetCommunity out
-csr2(config-router-af)# neighbor 10.0.0.6 send-community
-csr2(config-router-af)# neighbor 10.0.0.6 route-map SetCommunity out
+csr2(config-router-af)# neighbor 10.0.0.7 send-community
+csr2(config-router-af)# neighbor 10.0.0.7 route-map SetCommunity out
 !
 csr2(config)# access-list 101 10 permit ip 10.1.20.0 0.0.0.255 any
 csr2(config)# access-list 101 20 permit ip 10.1.21.0 0.0.0.255 any
@@ -136,8 +136,8 @@ Similar configuration for csr3, with different BGP community 65012:30:
 csr3(config-router)# bgp 65012
 csr3(config-router-af)# neighbor 10.0.0.6 send-community
 csr3(config-router-af)# neighbor 10.0.0.6 route-map SetCommunity out
-csr3(config-router-af)# neighbor 10.0.0.6 send-community
-csr3(config-router-af)# neighbor 10.0.0.6 route-map SetCommunity out
+csr3(config-router-af)# neighbor 10.0.0.7 send-community
+csr3(config-router-af)# neighbor 10.0.0.7 route-map SetCommunity out
 csr3(config)#!
 csr3(config)# access-list 101 10 permit ip 10.1.30.0 0.0.0.255 any
 csr3(config)# access-list 101 20 permit ip 10.1.31.0 0.0.0.255 any
