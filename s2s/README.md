@@ -365,7 +365,7 @@ If the workarounds in the preceding scenarios are ineffective, as a last resort,
 In powershel script **step02.ps1**, the Azure public public IP associated with the Cisco CSR is created with an idle-timeout of 20 minutes:
 
 ```
-New-AzPublicIpAddress -IdleTimeoutInMinutes 20 `
+New-AzPublicIpAddress -IdleTimeoutInMinutes 20
 ```
 the idle-timout of Azue public IP specifies how many minutes to keep a TCP connection remains open without relying on clients to send keep-alive messages. The idle-timeout associated with Azure public IP is set to longer interval compare with the Cisco terminal VTY timeout:
 ```
