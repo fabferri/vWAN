@@ -1,0 +1,1 @@
+﻿By Azure management portal remove the Address space "192.168.255.0/24" associated with the vpn sites.
