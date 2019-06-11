@@ -103,7 +103,7 @@ The diagram below shown the allowed communication flow between the three sites:
 [![8]][8]
 
 
-###<a name="vWAN"></a>2. CASE2: two sites have different networks and same ASNs
+### <a name="vWAN"></a>2. CASE2: two sites have different networks and same ASNs
 The network diagram shows below depicts the case with Site2 and Site3 with different networks and the same ASN.
 
 [![9]][9]
