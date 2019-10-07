@@ -9,13 +9,15 @@
 ##  - ascoicate the NSG to the subnet2
 ##  - set a UDR in subnet2 to force the traffic with destination 10.0.0.0/8 to transit through the CSR
 ##
-##  run the script bu command:
+##  RUN the script by command:
 ##  .\scriptName -adminUsername YOUR_USERNAME -adminPassword YOUR_PASSWORD
 ##
 ## Note
 ##  the script create Cisco CSR; to run the script you need to accept the terms license for the NVA. 
 ##  Run one time in the target Azure subscription the following command:
-##  Get-AzMarketplaceTerms  -Publisher "cisco" -Product "cisco-csr-1000v"  -Name "csr-azure-byol" | Set-AzMarketplaceTerms -Accept
+##
+##  Get-AzMarketplaceTerms  -Publisher "cisco" -Product "cisco-csr-1000v"  -Name 16_12-byol | Set-AzMarketplaceTerms -Accept
+##
 ##   
 ## 
 ################# Input parameters ################################
@@ -58,9 +60,9 @@ $siteArray = @(
        csr_nic2Name       = $csr1_Name + "-NIC1"
        csr_privateIP1     = "10.1.10.5"
        csr_privateIP2     = "10.1.11.5"
-       csr_publisherName  = "cisco"            
+       csr_publisherName  = "cisco"
        csr_offerName      = "cisco-csr-1000v"  
-       csr_skuName        = "csr-azure-byol"   
+       csr_skuName        = "16_12-byol"
        csr_version        = "latest"
        csr_Size           = "Standard_B2ms"
        vmadminName        = $adminUsername
@@ -71,7 +73,7 @@ $siteArray = @(
        vm_privateIP       = "10.1.11.10"
        vm_publisherName   = "openlogic"
        vm_offerName       = "CentOS"
-       vm_skuName         = "7.5"
+       vm_skuName         = "7.6"
        vm_version         = "latest"
        vm_Size            = "Standard_B1s"
        nsgName            = "nsg"
@@ -96,7 +98,7 @@ $siteArray = @(
        csr_privateIP2     = "10.1.21.5"
        csr_publisherName  = "cisco"            
        csr_offerName      = "cisco-csr-1000v"  
-       csr_skuName        = "csr-azure-byol"   
+       csr_skuName        = "16_12-byol"
        csr_version        = "latest"
        csr_Size           = "Standard_B2ms"
        vmadminName        = $adminUsername
@@ -107,7 +109,7 @@ $siteArray = @(
        vm_privateIP       = "10.1.21.10"
        vm_publisherName   = "openlogic"
        vm_offerName       = "CentOS"
-       vm_skuName         = "7.5"
+       vm_skuName         = "7.6"
        vm_version         = "latest"
        vm_Size            = "Standard_B1s"
        nsgName            = "nsg"
@@ -132,7 +134,7 @@ $siteArray = @(
        csr_privateIP2     = "10.1.31.5"
        csr_publisherName  = "cisco"            
        csr_offerName      = "cisco-csr-1000v"  
-       csr_skuName        = "csr-azure-byol"   
+       csr_skuName        = "16_12-byol"   
        csr_version        = "latest"
        csr_Size           = "Standard_B2ms"
        vmadminName        = $adminUsername
@@ -143,7 +145,7 @@ $siteArray = @(
        vm_privateIP       = "10.1.31.10"
        vm_publisherName   = "openlogic"
        vm_offerName       = "CentOS"
-       vm_skuName         = "7.5"
+       vm_skuName         = "7.6"
        vm_version         = "latest"
        vm_Size            = "Standard_B1s"
        nsgName            = "nsg"
@@ -340,7 +342,7 @@ try {
                        -Id $csr_nic2.Id `
   #                     -Primary
 
-  $csr_Config = Set-AzVMBootDiagnostics -VM $csr_Config -Disable -Verbose 
+  $csr_Config = Set-AzVMBootDiagnostic -VM $csr_Config -Disable -Verbose
 
   $csr=New-AzVM -VM $csr_Config `
             -ResourceGroupName $rgName `
@@ -423,7 +425,7 @@ try {
                        -Id $vm_nic.Id `
                        -Primary 
 
-  $vm_Config = Set-AzVMBootDiagnostics -VM $vm_Config -Disable -Verbose 
+  $vm_Config = Set-AzVMBootDiagnostic -VM $vm_Config -Disable -Verbose 
 
   $vm=New-AzVM -VM $vm_Config `
             -ResourceGroupName $rgName `

@@ -7,7 +7,7 @@
 # - get the configuration of Virtual WAN from the storage account via REST
 # - parse the configuration of Virtual WAN 
 # - create the configuration of CSR of different sites
-# - write the configuration of Cisco CSRs in the local folder
+# - write the configuration of Cisco CSRs in the local folder in text files
 # Note: the storage account can be deployed in any Azure region; it doesn't need to be in the same Azure region of vHub
 #
 # Reference:
@@ -125,12 +125,12 @@ $s=Get-AzStorageAccount -ResourceGroupName $rgName
 if (!$s) { 
    # create a new storage account
    try { 
-       $storageAccount =Get-AzStorageAccount -ResourceGroupName $rgName –StorageAccountName $storageAccountName -ErrorAction Stop 
+       $storageAccount =Get-AzStorageAccount -ResourceGroupName $rgName $storageAccountName -ErrorAction Stop 
         Write-Host 'Storage account'$storageAccount.StorageAccountName 'already exists... skipping' -foregroundcolor Yellow -backgroundcolor Black
    } 
    catch{
        # Create a new storage account.
-       $storageAccount =New-AzStorageAccount -ResourceGroupName $rgName –StorageAccountName $storageAccountName -Location $Location -Type $storageAccountType
+       $storageAccount =New-AzStorageAccount -ResourceGroupName $rgName $storageAccountName -Location $Location -Type $storageAccountType -Kind BlobStorage -AccessTier Hot 
        Write-Host 'Create the storage account: '$storageAccount.StorageAccountName  -foregroundcolor Yellow -backgroundcolor Black
    }
 } 
@@ -185,7 +185,7 @@ write-host -ForegroundColor Green "`nwriting vpn sites configuration in the stor
 Get-AzVirtualWanVpnConfiguration -VirtualWan $virtualWan -StorageSasUrl $sasURI -VpnSite $vpnSites
 
 ### get the configuration of vWAN via REST API,from the storage account 
-### When working with REST interfaces with PowerShell it’s pretty common to get JSON responses that have information that is returned as arrays of PSCustomObjects
+### When working with REST interfaces with PowerShell itï¿½s pretty common to get JSON responses that have information that is returned as arrays of PSCustomObjects
 $vWANConfig = Invoke-RestMethod  -Method Get -Uri $sasURI 
 
 

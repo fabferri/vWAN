@@ -1,4 +1,4 @@
-﻿##################################################################
+##################################################################
 # 
 # Setup list:
 # - Create a resource Group for Azure Virtual WAN
@@ -66,5 +66,4 @@ try {
    # VpnGatewayScaleUnit 1 -> 500Mbps
    New-AzVpnGateway -ResourceGroupName $rgName -Name $vpnGtwHubName -VpnGatewayScaleUnit 1 -VirtualHubId $vhub.Id 
 }
-
 
