@@ -125,7 +125,7 @@ $s=Get-AzStorageAccount -ResourceGroupName $rgName
 if (!$s) { 
    # create a new storage account
    try { 
-       $storageAccount =Get-AzStorageAccount -ResourceGroupName $rgName $storageAccountName -ErrorAction Stop 
+       $storageAccount =Get-AzStorageAccount -ResourceGroupName $rgName  $storageAccountName -ErrorAction Stop 
         Write-Host 'Storage account'$storageAccount.StorageAccountName 'already exists... skipping' -foregroundcolor Yellow -backgroundcolor Black
    } 
    catch{
