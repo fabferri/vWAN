@@ -72,8 +72,9 @@ try {
 } catch {
    Write-Host 'error in create Virtual Hub: '$hubName'' -foregroundcolor  Green -backgroundcolor Black
 }
-Exit
 
+
+Write-Host (Get-Date) -ForegroundColor Yellow
 # New-AzVpnGateway creates a scalable VPN Gateway in the Virtual Hub. 
 # This is a connectivity for site-to-site connections and point-to-site inside the VirtualHub.
 # This gateway resizes and scales based on the scale unit specified in this or the Set-AzVpnGateway cmdlet.
@@ -86,5 +87,7 @@ try {
    # VpnGatewayScaleUnit 1 -> 500Mbps
    New-AzVpnGateway -ResourceGroupName $rgName -Name $vpnGtwHubName -VpnGatewayScaleUnit 1 -VirtualHubId $vhub.Id 
 }
+Write-Host (Get-Date) -ForegroundColor Yellow
+
 
 

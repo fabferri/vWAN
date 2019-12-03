@@ -72,7 +72,7 @@ try {
 
 
 $route1 = Add-AzVirtualHubRoute -DestinationType "CIDR" -Destination @("10.0.10.0/24", "10.0.20.0/24") -NextHopType "IPAddress"  -NextHop @("10.0.30.10")
-$routeTable1 = Add-AzVirtualHubRouteTable -Route @($route1) -Connection @($vHubConnection1,$vHubConnection2,$vHubConnection3) -Name $routeTableName 
+$routeTable1 = Add-AzVirtualHubRouteTable -Route @($route1) -Connection @("All_Vnets") -Name $routeTableName 
 Set-AzVirtualHub -VirtualHub $vhub -RouteTable @($routeTable1)
 
 Exit

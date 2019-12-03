@@ -15,7 +15,6 @@
 ##  .\scriptName -adminUsername YOUR_USERNAME -adminPassword YOUR_PASSWORD
 ##
 ################# Input parameters ########
-#
 ### Variables
 $subscriptionName= "AzDev"                             # name of the Azure subscription
 $rgName          = "rg-vwan1-spokes"                   # name of the resource group to deploye the spoke VNets
